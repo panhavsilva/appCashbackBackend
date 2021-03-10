@@ -1,0 +1,31 @@
+{
+  "name": "appCashbackBackend",
+  "version": "1.0.0",
+  "description": "Project Cashback",
+  "main": "routes.js",
+  "scripts": {
+    "start": "npm-run-all -p nodemon browsersync",
+    "nodemon": "nodemon server.js",
+    "browsersync": "browser-sync start --proxy http://localhost:5000 --files 'public, views'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/panhavsilva/appCashbackBackend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/panhavsilva/appCashbackBackend/issues"
+  },
+  "homepage": "https://github.com/panhavsilva/appCashbackBackend#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7",
+    "nunjucks": "^3.2.3"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.26.14",
+    "npm-run-all": "^4.1.5"
+  }
+}

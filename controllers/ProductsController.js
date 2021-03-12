@@ -2,6 +2,9 @@ const fs = require('fs');
 const data = require('../data.json');
 
 module.exports = {
+  list(req,res){
+    return res.json(data.products);
+  },
   create(req,res){
     return res.json({ message: 'Product create!'});
   },

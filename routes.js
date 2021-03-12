@@ -7,6 +7,7 @@ routes.get('/', function (req, res) {
 });
 
 routes.get('/products/create', products.create);
+routes.get('/products/:id', products.show);
 
 routes.post('/products', products.post);
 

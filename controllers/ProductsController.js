@@ -28,6 +28,18 @@ module.exports = {
       return;
     });
 
-    res.json(data.products)
+    res.json(data.products);
+  },
+  show(req,res){
+    const {id} = req.params;
+    const foundProduct = data.products.find( function(product){
+      return product.id == id;
+    });
+
+    if(!foundProduct){
+      return res.json({ message : 'Product not found!'});
+    }
+
+    return res.json(foundProduct);
   }
 }

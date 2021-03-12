@@ -2,8 +2,8 @@
   "products": [
     {
       "id": 1,
-      "name": "teste",
-      "price": 10
+      "name": "alterado",
+      "price": 11
     },
     {
       "id": 2,

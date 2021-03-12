@@ -23,7 +23,7 @@ module.exports = {
       price
     })
 
-    fs.writeFile('data.json', JSON.stringify(data, null, 2), function(err){
+    fs.writeFile('data.json', JSON.stringify(data, null, 2), (err) =>{
       if(err){ return res.json({message : 'Write file error!' }); }
       return res.json(data.products);
     });
@@ -31,7 +31,7 @@ module.exports = {
   },
   show(req,res){
     const {id} = req.params;
-    const foundProduct = data.products.find( function(product){
+    const foundProduct = data.products.find((product) => {
       return product.id == id;
     });
 
@@ -43,7 +43,7 @@ module.exports = {
   },
   edit(req,res){
     const {id} = req.params;
-    const foundProduct = data.products.find( function(product){
+    const foundProduct = data.products.find((product) => {
       return product.id == id;
     });
 
@@ -56,7 +56,7 @@ module.exports = {
   put(req,res){
     const {id} = req.body;
     let index = 0;
-    const foundProduct = data.products.find( function(product, foundIndex){
+    const foundProduct = data.products.find((product, foundIndex) => {
       if(product.id == id){
         index = foundIndex;
         return true;
@@ -75,9 +75,22 @@ module.exports = {
 
     data.products[index] = product;
 
-    fs.writeFile('data.json', JSON.stringify(data, null, 2), function(err){
+    fs.writeFile('data.json', JSON.stringify(data, null, 2), (err) => {
       if(err){return res.json({ message : 'Write error!'})}
       return res.json(product);
+    })
+  },
+  delete(req,res){
+    const {id} = req.body;
+    const filterProducts = data.products.filter((product) => {
+      return product.id != id;
+    });
+
+    data.products = filterProducts;
+
+    fs.writeFile('data.json', JSON.stringify(data, null, 2), (err) => {
+      if(err){ return res.json({message : 'Write File Error!'}); }
+      return res.json(data.products);
     })
   }
 }

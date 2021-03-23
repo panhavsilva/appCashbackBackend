@@ -21,7 +21,9 @@ module.exports = {
     const priceNumber = onlyNumber(price);
 
     if (priceNumber == '') {
-      return res.json(createErrorMessage('Please, fill the price field with numbers only!'));
+      return res.json(
+        createErrorMessage('Please, fill the price field with numbers only!')
+      );
     }
 
     data.products = data.products.concat({
@@ -70,8 +72,10 @@ module.exports = {
     const price = req.body.price || foundProduct.price;
     const priceNumber = onlyNumber(price);
 
-    if (priceNumber == '') {
-      return res.json(createErrorMessage('Please, fill the price field with numbers only!'));
+    if (!priceNumber) {
+      return res.json(
+        createErrorMessage('Please, fill in the price field correctly!')
+      );
     }
     
     const product = {
@@ -121,11 +125,8 @@ function findProduct(id){
 
 function onlyNumber (price) {
   const priceString = String(price).replace(/\D*/g, '');
-  const priceNumber = priceString.
-    replace(/(\d\d)$/g, `,$1`).
-    replace(/(\d{1,3})(\d{3},\d{2})/g, `$1.$2`).
-    replace(/(\d{3})*(\d{3}.\d{3},{2})/g, `$1.$2`)
-  ;
+  const priceDecimal = priceString.replace(/(\d\d)$/g, `.$1`);
+  const priceNumber = Number(priceDecimal);
 
   return priceNumber; 
 }

@@ -2,7 +2,7 @@
   "products": [
     {
       "id": "2",
-      "price": 122445,
+      "price": "10,50",
       "name": "alterado2"
     },
     {
@@ -49,6 +49,11 @@
       "id": "19275f3d-7507-427a-a8ca-741680b791cd",
       "name": "create3",
       "price": 1222424
+    },
+    {
+      "id": "c52a7bfa-d70a-4aee-a047-869b1c4b91aa",
+      "name": "create33",
+      "price": 12222
     }
   ],
   "orders": []

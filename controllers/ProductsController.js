@@ -120,9 +120,12 @@ function findProduct(id){
 };
 
 function onlyNumber (price) {
-  const priceString = String(price);
-  const regex = /\D*/g;
-  const priceNumber = Number( priceString.replace(regex, '') );
+  const priceString = String(price).replace(/\D*/g, '');
+  const priceNumber = priceString.
+    replace(/(\d\d)$/g, `,$1`).
+    replace(/(\d{1,3})(\d{3},\d{2})/g, `$1.$2`).
+    replace(/(\d{3})*(\d{3}.\d{3},{2})/g, `$1.$2`)
+  ;
 
   return priceNumber; 
 }

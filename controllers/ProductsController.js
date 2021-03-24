@@ -6,6 +6,15 @@ module.exports = {
   list(req,res){
     return res.json(data.products);
   },
+  show(req,res){
+    const {id} = req.params;
+
+    if(!findProduct(id)){
+      return res.json(createErrorMessage('Product not found!'));
+    };
+
+    return res.json(findProduct(id));
+  },
   post(req,res){
     const keys = Object.keys(req.body);
 
@@ -38,58 +47,55 @@ module.exports = {
     });
     
   },
-  show(req,res){
-    const {id} = req.params;
-
-    if(!findProduct(id)){
-      return res.json(createErrorMessage('Product not found!'));
-    };
-
-    return res.json(findProduct(id));
-  },
-  edit(req,res){
-    const {id} = req.params;
-
-    if(!findProduct(id)){
-      return res.json(createErrorMessage('Product not found!'));
-    }
-
-    return res.json(findProduct(id));
-  },
   put(req,res){
     const {id} = req.params;
-
     const foundProduct = findProduct(id);
-
+    
     if(!foundProduct){
       return res.json(createErrorMessage('Product not found!'));
     }
 
+    const keys = Object.keys(req.body); 
+
+    for(key of keys){
+      if(req.body[key] == ''){
+        return res.json(createErrorMessage('Please, fill all fields!'));
+      }
+    }
+    
     const index = data.products.findIndex((product) => { 
       return product.id == id 
     });
-
-    const price = req.body.price || foundProduct.price;
-    const priceNumber = onlyNumber(price);
-
-    if (!priceNumber) {
-      return res.json(
-        createErrorMessage('Please, fill in the price field correctly!')
-      );
-    }
     
-    const product = {
-      ...foundProduct,
-      ...req.body,
-      id: id,
-      price: priceNumber 
-    };
+    const editedProducts = data.products.map(
+      (product)=>{
+        const price = req.body.price || product.price;
+        const priceNumber = onlyNumber(price);
+        
+        if (!priceNumber) {
+          return res.json(
+            createErrorMessage('Please, fill in the price field correctly!')
+          );
+        }
 
-    data.products[index] = product;
+        if(product.id === id){
+          product = {
+            ...product,
+            ...req.body,
+            id: id,
+            price: priceNumber
+          };
+        }
+
+        return product;
+      }
+    );
+
+    data.products = editedProducts;
 
     fs.writeFile('data.json', JSON.stringify(data, null, 2), (err) => {
       if(err){return res.json(createErrorMessage('Write error!'))}
-      return res.json(product);
+      return res.json(data.products[index]);
     })
   },
   delete(req,res){
@@ -129,4 +135,4 @@ function onlyNumber (price) {
   const priceNumber = Number(priceDecimal);
 
   return priceNumber; 
-}
+};

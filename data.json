@@ -2,58 +2,33 @@
   "products": [
     {
       "id": "2",
-      "price": 222201.01,
-      "name": "alterado2"
-    },
-    {
-      "id": "3ca9170d-6eb4-4fb3-a6b5-e78e2cc84fc7",
-      "name": "teste05",
-      "price": 50
-    },
-    {
-      "id": "dcd1fae7-bfc7-45d7-b1f3-9efc89002dee",
-      "name": "alterado",
-      "price": 5
-    },
-    {
-      "id": "5517b696-e9a5-4dce-84ce-c09f9fabfa33",
-      "name": "teste50",
-      "price": 55
-    },
-    {
-      "id": "90eca716-79f1-4c32-bb5a-84b8d10120a0",
-      "name": "teste55",
-      "price": 500
-    },
-    {
-      "id": "3505c237-d9fb-428a-86f8-f2eb42af10a7",
-      "name": "alterado",
-      "price": 6
-    },
-    {
-      "id": "fdf0ed9b-9a70-4f77-b3e6-2db5dc78018e",
-      "name": "teste",
-      "price": 57
-    },
-    {
-      "id": "338b9a23-d147-4ba0-a637-a31d0e052e8d",
-      "name": "create",
-      "price": 12
+      "name": "product",
+      "price": 12345.67
     },
     {
       "id": "3a6d55ca-21cb-453d-afa0-76cc40401900",
-      "name": "create2",
-      "price": 2412
+      "name": "alterado2",
+      "price": 24.12
     },
     {
       "id": "19275f3d-7507-427a-a8ca-741680b791cd",
-      "name": "create3",
-      "price": 1222424
+      "name": "alterado3",
+      "price": 12224.24
     },
     {
       "id": "c52a7bfa-d70a-4aee-a047-869b1c4b91aa",
-      "name": "create33",
-      "price": 12222
+      "name": "alterado4",
+      "price": 1000.01
+    },
+    {
+      "id": "eba251a4-8c0d-4422-96e3-06847245fa8f",
+      "name": "alterado",
+      "price": 1122.33
+    },
+    {
+      "id": "9072d973-1f7c-4a84-8f99-b934987e2b7b",
+      "name": "alterado",
+      "price": 2021.03
     }
   ],
   "orders": []

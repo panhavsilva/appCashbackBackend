@@ -4,16 +4,17 @@ const uuid = require('uuid');
 
 module.exports = {
   list(req,res){
-    return res.json(data.products);
+    return res.json(Object.values(data.products));
   },
   show(req,res){
     const {id} = req.params;
+    const product = data.products[id];
 
-    if(!findProduct(id)){
+    if(!product){
       return res.json(createErrorMessage('Product not found!'));
     };
 
-    return res.json(findProduct(id));
+    return res.json(product);
   },
   post(req,res){
     const keys = Object.keys(req.body);
@@ -58,36 +59,28 @@ module.exports = {
     const keys = Object.keys(req.body); 
 
     for(key of keys){
-      if(req.body[key] == ''){
+      if(req.body[key] === ''){
         return res.json(createErrorMessage('Please, fill all fields!'));
       }
     }
-    
+
     const index = data.products.findIndex((product) => { 
-      return product.id == id 
+      return product.id === id 
     });
-    
+
+    const priceNumber = onlyNumber(req.body.price);
+
     const editedProducts = data.products.map(
       (product)=>{
-        const price = req.body.price || product.price;
-        const priceNumber = onlyNumber(price);
-        
-        if (!priceNumber) {
-          return res.json(
-            createErrorMessage('Please, fill in the price field correctly!')
-          );
+        if(product.id !== id){
+          return product;
         }
 
-        if(product.id === id){
-          product = {
-            ...product,
-            ...req.body,
-            id: id,
-            price: priceNumber
-          };
+        return {
+          ...product,
+          price : typeof priceNumber === "number" ? priceNumber : product.price,
+          name : req.body.name || product.name
         }
-
-        return product;
       }
     );
 

@@ -26,31 +26,29 @@ module.exports = {
     }
 
     const {name, price} = req.body;
-    const id = uuid.v4();
-        
+    const id = uuid.v4();  
     const priceNumber = onlyNumber(price);
-
-    if (priceNumber == '') {
+    if (priceNumber === false && priceNumber !== 0){
       return res.json(
-        createErrorMessage('Please, fill the price field with numbers only!')
+        createErrorMessage('Please, correctly fill in the price field!')
       );
     }
 
-    data.products = data.products.concat({
+    data.products[id] = {
       id,
       name,
       price: priceNumber
-    });
+    }
 
     fs.writeFile('data.json', JSON.stringify(data, null, 2), (err) =>{
       if(err){ return res.json(createErrorMessage('Write file error!')); }
-      return res.json(data.products);
+      return res.json(Object.values(data.products));
     });
     
   },
   put(req,res){
     const {id} = req.params;
-    const foundProduct = findProduct(id);
+    const foundProduct = data.products[id];
     
     if(!foundProduct){
       return res.json(createErrorMessage('Product not found!'));
@@ -64,45 +62,32 @@ module.exports = {
       }
     }
 
-    const index = data.products.findIndex((product) => { 
-      return product.id === id 
-    });
-
     const priceNumber = onlyNumber(req.body.price);
+    if (priceNumber === false && priceNumber !== 0){
+      return res.json(
+        createErrorMessage('Please, correctly fill in the price field!')
+      );
+    }
 
-    const editedProducts = data.products.map(
-      (product)=>{
-        if(product.id !== id){
-          return product;
-        }
-
-        return {
-          ...product,
-          price : typeof priceNumber === "number" ? priceNumber : product.price,
-          name : req.body.name || product.name
-        }
-      }
-    );
-
-    data.products = editedProducts;
+    data.products[id] = {
+      ...foundProduct,
+      price: priceNumber ?? foundProduct.price,
+      name: req.body.name || foundProduct.name
+    }
 
     fs.writeFile('data.json', JSON.stringify(data, null, 2), (err) => {
       if(err){return res.json(createErrorMessage('Write error!'))}
-      return res.json(data.products[index]);
+      return res.json(data.products[id]);
     })
   },
   delete(req,res){
     const {id} = req.params;
 
-    if(!findProduct(id)){
+    if(!data.products[id]){
       return res.json(createErrorMessage('Product not found!'));
     }
 
-    const filterProducts = data.products.filter((product) => {
-      return product.id != id;
-    });
-
-    data.products = filterProducts;
+    delete data.products[id];
 
     fs.writeFile('data.json', JSON.stringify(data, null, 2), (err) => {
       if(err){ return res.json(createErrorMessage('Write File Error!')); }
@@ -115,16 +100,14 @@ function createErrorMessage(message) {
   return {message: message, error: true};
 };
 
-function findProduct(id){
- const results = data.products.find((product) =>{
-    return product.id == id
-  });
-  return results;
-};
-
 function onlyNumber (price) {
   const priceString = String(price).replace(/\D*/g, '');
   const priceDecimal = priceString.replace(/(\d\d)$/g, `.$1`);
+
+  if(priceDecimal === ''){
+    return false;
+  }
+
   const priceNumber = Number(priceDecimal);
 
   return priceNumber; 

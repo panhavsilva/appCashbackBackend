@@ -1,34 +1,39 @@
 {
   "products": {
-    "2":{
+    "2": {
       "id": "2",
-      "name": "product1",
-      "price": 0
+      "name": "product id 2",
+      "price": 13213.21
     },
-    "3a6d55ca-21cb-453d-afa0-76cc40401900":{
+    "3a6d55ca-21cb-453d-afa0-76cc40401900": {
       "id": "3a6d55ca-21cb-453d-afa0-76cc40401900",
       "name": "alterado2",
       "price": 24.12
     },
-    "19275f3d-7507-427a-a8ca-741680b791cd":{
+    "19275f3d-7507-427a-a8ca-741680b791cd": {
       "id": "19275f3d-7507-427a-a8ca-741680b791cd",
       "name": "alterado3",
       "price": 12224.24
     },
-    "c52a7bfa-d70a-4aee-a047-869b1c4b91aa":{
+    "c52a7bfa-d70a-4aee-a047-869b1c4b91aa": {
       "id": "c52a7bfa-d70a-4aee-a047-869b1c4b91aa",
       "name": "alterado4",
       "price": 1000.01
     },
-    "eba251a4-8c0d-4422-96e3-06847245fa8f":{
+    "eba251a4-8c0d-4422-96e3-06847245fa8f": {
       "id": "eba251a4-8c0d-4422-96e3-06847245fa8f",
       "name": "alterado",
       "price": 1122.33
     },
-    "9072d973-1f7c-4a84-8f99-b934987e2b7b":{
-      "id": "9072d973-1f7c-4a84-8f99-b934987e2b7b",
-      "name": "alterado",
-      "price": 2021.03
+    "8ce8c42f-1951-4600-a69f-f907caf7204e": {
+      "id": "8ce8c42f-1951-4600-a69f-f907caf7204e",
+      "name": "create2",
+      "price": 1988.05
+    },
+    "b67a7472-c94f-4b42-bdc2-2ded1747cf02": {
+      "id": "b67a7472-c94f-4b42-bdc2-2ded1747cf02",
+      "name": "create4",
+      "price": 0
     }
   },
   "orders": []

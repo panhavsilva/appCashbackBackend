@@ -28,7 +28,7 @@ module.exports = {
     const {name, price} = req.body;
     const id = uuid.v4();  
     const priceNumber = onlyNumber(price);
-    if (priceNumber === false && priceNumber !== 0){
+    if (priceNumber === '' && priceNumber !== 0){
       return res.json(
         createErrorMessage('Please, correctly fill in the price field!')
       );

@@ -62,8 +62,8 @@ module.exports = {
       }
     }
 
-    const priceNumber = onlyNumber(req.body.price);
-    if (priceNumber === false && priceNumber !== 0){
+    const priceNumber = onlyNumber(req.body.price) ?? foundProduct.price;
+    if (priceNumber === '' && priceNumber !== 0){
       return res.json(
         createErrorMessage('Please, correctly fill in the price field!')
       );
@@ -71,7 +71,7 @@ module.exports = {
 
     data.products[id] = {
       ...foundProduct,
-      price: priceNumber ?? foundProduct.price,
+      price: priceNumber,
       name: req.body.name || foundProduct.name
     }
 
@@ -105,7 +105,7 @@ function onlyNumber (price) {
   const priceDecimal = priceString.replace(/(\d\d)$/g, `.$1`);
 
   if(priceDecimal === ''){
-    return false;
+    return priceDecimal;
   }
 
   const priceNumber = Number(priceDecimal);

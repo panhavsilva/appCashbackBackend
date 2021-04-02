@@ -3,7 +3,7 @@
     "2": {
       "id": "2",
       "name": "product3",
-      "price": 111111.11
+      "price": 1234.56
     },
     "3a6d55ca-21cb-453d-afa0-76cc40401900": {
       "id": "3a6d55ca-21cb-453d-afa0-76cc40401900",
@@ -29,11 +29,6 @@
       "id": "8ce8c42f-1951-4600-a69f-f907caf7204e",
       "name": "create2",
       "price": 1988.05
-    },
-    "b67a7472-c94f-4b42-bdc2-2ded1747cf02": {
-      "id": "b67a7472-c94f-4b42-bdc2-2ded1747cf02",
-      "name": "create4",
-      "price": 0
     }
   },
   "orders": []

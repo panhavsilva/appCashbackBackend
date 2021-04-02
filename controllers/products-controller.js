@@ -3,10 +3,10 @@ const data = require('../data.json')
 const uuid = require('uuid')
 
 module.exports = {
-  list (req, res) {
+  list(req, res) {
     return res.json(Object.values(data.products))
   },
-  show (req, res) {
+  show(req, res) {
     const { id } = req.params
     const product = data.products[id]
 
@@ -16,7 +16,7 @@ module.exports = {
 
     return res.json(product)
   },
-  post (req, res) {
+  async post(req, res) {
     const keys = Object.keys(req.body)
 
     for (key of keys) {
@@ -40,14 +40,9 @@ module.exports = {
       price: priceNumber
     }
 
-    fs.writeFile('data.json', JSON.stringify(data, null, 2), (err) => {
-      if (err) {
-        return res.json(createErrorMessage('Write file error!'))
-      }
-      return res.json(Object.values(data.products))
-    })
+    return res.json(Object.values(data.products))
   },
-  put (req, res) {
+  put(req, res) {
     const { id } = req.params
     const foundProduct = data.products[id]
 
@@ -76,36 +71,27 @@ module.exports = {
       name: req.body.name || foundProduct.name
     }
 
-    fs.writeFile('data.json', JSON.stringify(data, null, 2), (err) => {
-      if (err) {
-        return res.json(createErrorMessage('Write error!'))
-      }
-      return res.json(data.products[id])
-    })
+    return res.json(data.products[id])
   },
-  delete (req, res) {
+  delete(req, res) {
     const { id } = req.params
 
     if (!data.products[id]) {
       return res.json(createErrorMessage('Product not found!'))
     }
 
-    delete data.products[id]
+    const { [id]: removeId, ...products } = data.products
+    data.products = products
 
-    fs.writeFile('data.json', JSON.stringify(data, null, 2), (err) => {
-      if (err) {
-        return res.json(createErrorMessage('Write File Error!'))
-      }
-      return res.json({ id: id })
-    })
+    return res.json({ id: id })
   }
 }
 
-function createErrorMessage (message) {
+function createErrorMessage(message) {
   return { message: message, error: true }
 }
 
-function onlyNumber (price) {
+function onlyNumber(price) {
   const priceString = String(price).replace(/\D*/g, '')
   const priceDecimal = priceString.replace(/(\d\d)$/g, '.$1')
 

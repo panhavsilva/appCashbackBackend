@@ -19,6 +19,4 @@ server.use(methodOverride('_method'))
 server.use(cors(corsOptions))
 server.use(routes)
 
-server.listen(5000, () => {
-  console.log('server is running')
-})
+module.exports = server

@@ -1,6 +1,7 @@
 const fs = require('fs')
 const data = require('../data.json')
 const uuid = require('uuid')
+const db = require('../services/db')
 
 module.exports = {
   list(req, res) {
@@ -34,13 +35,18 @@ module.exports = {
       )
     }
 
-    data.products[id] = {
-      id,
-      name,
-      price: priceNumber
+    try {
+      const newProduct = await db.collection('products')
+        .insertOne({ id, name, price: priceNumber })
+
+      return res.json(Object.values(newProduct.ops))
+
+    } catch (error) {
+      console.log('Error: ', error)
+
+      return res.status(400).json(createErrorMessage(error))
     }
 
-    return res.json(Object.values(data.products))
   },
   put(req, res) {
     const { id } = req.params
@@ -71,7 +77,12 @@ module.exports = {
       name: req.body.name || foundProduct.name
     }
 
-    return res.json(data.products[id])
+    fs.writeFile('data.json', JSON.stringify(data, null, 2), (err) => {
+      if (err) {
+        return res.json(createErrorMessage('Write error!'))
+      }
+      return res.json(data.products[id])
+    })
   },
   delete(req, res) {
     const { id } = req.params
@@ -83,7 +94,12 @@ module.exports = {
     const { [id]: removeId, ...products } = data.products
     data.products = products
 
-    return res.json({ id: id })
+    fs.writeFile('data.json', JSON.stringify(data, null, 2), (err) => {
+      if (err) {
+        return res.json(createErrorMessage('Write File Error!'))
+      }
+      return res.json({ id: id })
+    })
   }
 }
 

@@ -1,6 +1,8 @@
+require('getmodule')
+
 const express = require('express')
 const routes = express.Router()
-const products = require('./controllers/products-controller')
+const products = getmodule('src/controllers/products-controller')
 
 routes.get('/products', products.list)
 routes.get('/products/:id/show', products.show)

@@ -1,5 +1,8 @@
+require('getmodule')
+
 const uuid = require('uuid')
-const db = require('../services/db')
+
+const db = getmodule('src/services/db')
 const col = db.collection('products')
 
 module.exports = {

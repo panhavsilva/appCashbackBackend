@@ -1,5 +1,5 @@
 const uuid = require('uuid')
-const db = require('../database/db')
+const db = require('../services/db')
 const col = db.collection('products')
 
 module.exports = {

@@ -17,7 +17,7 @@ server.use(express.json())
 server.use(express.urlencoded({ extended: true }))
 server.use(express.static('public'))
 server.use(methodOverride('_method'))
-server.use(cors())
+server.use(cors(corsOptions))
 server.use(routes)
 
 module.exports = server

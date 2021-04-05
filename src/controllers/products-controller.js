@@ -13,7 +13,7 @@ module.exports = {
       console.log('Error: ', error)
 
       return res.status(400)
-        .json(createErrorMessage('Product list error'))
+        .json(createErrorMessage('Error in the list of products!'))
     }
 
   },
@@ -37,7 +37,7 @@ module.exports = {
     }
 
   },
-  async post(req, res) {
+  async create(req, res) {
     const keys = Object.keys(req.body)
 
     for (key of keys) {
@@ -48,7 +48,7 @@ module.exports = {
     const item = {
       id: uuid.v4(),
       name: req.body.name,
-      price: onlyNumber(req.body.price)
+      price: transformToDecimalNumber(req.body.price)
     }
 
     if (item.price === '' && item.price !== 0) {
@@ -71,7 +71,7 @@ module.exports = {
     }
 
   },
-  async put(req, res) {
+  async edit(req, res) {
     const { id } = req.params
     const foundProduct = await col.findOne({ id: id })
     if (foundProduct === null) {
@@ -90,7 +90,7 @@ module.exports = {
     try {
       const item = {
         name: req.body.name || foundProduct.name,
-        price: onlyNumber(req.body.price) || foundProduct.price
+        price: transformToDecimalNumber(req.body.price) || foundProduct.price
       }
 
       if (item.price === '' && item.price !== 0) {
@@ -142,7 +142,11 @@ function createErrorMessage(message) {
   return { message: message, error: true }
 }
 
-function onlyNumber(price) {
+function transformToDecimalNumber(price) {
+  if (typeof price === ('number')) {
+    return price
+  }
+
   const priceString = String(price).replace(/\D*/g, '')
   const priceDecimal = priceString.replace(/(\d\d)$/g, '.$1')
 

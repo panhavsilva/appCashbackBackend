@@ -1,23 +1,23 @@
 const uuid = require('uuid')
 
 const db = getmodule('src/services/db')
-const col = db.collection('cashbackRange')
+const col = db.collection('cashbackRanges')
 
 module.exports = {
   async list(req, res) {
     try {
-      const cashbackRange = await col.find({}).toArray()
-      return res.json(cashbackRange)
+      const cashbackRanges = await col.find({}).toArray()
+      return res.json(cashbackRanges)
 
     } catch (error) {
       console.log('Error: ', error)
 
       return res.status(400)
-        .json(createErrorMessage('Cashback range list error'))
+        .json(createErrorMessage('Error in the list of cashback ranges!'))
     }
 
   },
-  async post(req, res) {
+  async create(req, res) {
     const keys = Object.keys(req.body)
 
     for (key of keys) {
@@ -28,12 +28,12 @@ module.exports = {
     const item = {
       id: uuid.v4(),
       name: req.body.name,
-      initialValue: onlyNumber(req.body.initialValue),
-      finalValue: onlyNumber(req.body.initialValue)
+      initial: transformToDecimalNumber(req.body.initial),
+      final: transformToDecimalNumber(req.body.final)
     }
 
     if (
-      item.initialValue === '' && item.initialValue !== 0
+      item.initial === '' && item.initial !== 0
     ) {
       return res.json(
         createErrorMessage('Please, correctly fill in the initial value field!')
@@ -41,7 +41,7 @@ module.exports = {
     }
 
     if (
-      item.finalValue === '' && item.finalValue !== 0
+      item.final === '' && item.final !== 0
     ) {
       return res.json(
         createErrorMessage('Please, correctly fill in the final value field!')
@@ -49,7 +49,7 @@ module.exports = {
     }
 
     try {
-      const newCashback = await db.collection('cashbackRange')
+      const newCashback = await db.collection('cashbackRanges')
         .insertOne(item)
 
       return res.json(Object.values(newCashback.ops))
@@ -58,11 +58,11 @@ module.exports = {
       console.log('Error: ', error)
 
       return res.status(400)
-        .json(createErrorMessage('Error creating new cashback range'))
+        .json(createErrorMessage('Error creating new cashback range!'))
     }
 
   },
-  async put(req, res) {
+  async edit(req, res) {
     const { id } = req.params
     const foundCashbackRange = await col.findOne({ id: id })
     if (foundCashbackRange === null) {
@@ -81,12 +81,12 @@ module.exports = {
     try {
       const item = {
         name: req.body.name || foundCashbackRange.name,
-        initialValue: onlyNumber(req.body.initialValue) || foundCashbackRange.initialValue,
-        finalValue: onlyNumber(req.body.finalValue) || foundCashbackRange.finalValue
+        initial: transformToDecimalNumber(req.body.initial) || foundCashbackRange.initial,
+        final: transformToDecimalNumber(req.body.final) || foundCashbackRange.final
       }
 
       if (
-        item.initialValue === '' && item.initialValue !== 0
+        item.initial === '' && item.initial !== 0
       ) {
         return res.json(
           createErrorMessage('Please, correctly fill in the initial value field!')
@@ -94,7 +94,7 @@ module.exports = {
       }
 
       if (
-        item.finalValue === '' && item.finalValue !== 0
+        item.final === '' && item.final !== 0
       ) {
         return res.json(
           createErrorMessage('Please, correctly fill in the final value field!')
@@ -114,7 +114,7 @@ module.exports = {
       console.log('Error: ', error)
 
       return res.status(400)
-        .json(createErrorMessage('Error edit cashback range'))
+        .json(createErrorMessage('Error edit cashback range!'))
     }
 
   },
@@ -134,7 +134,7 @@ module.exports = {
       console.log('Error: ', error)
 
       return res.status(400)
-        .json(createErrorMessage('Error delete cashback range'))
+        .json(createErrorMessage('Error delete cashback range!'))
     }
 
   }
@@ -144,7 +144,11 @@ function createErrorMessage(message) {
   return { message: message, error: true }
 }
 
-function onlyNumber(price) {
+function transformToDecimalNumber(price) {
+  if (typeof price === ('number')) {
+    return price
+  }
+
   const priceString = String(price).replace(/\D*/g, '')
   const priceDecimal = priceString.replace(/(\d\d)$/g, '.$1')
 

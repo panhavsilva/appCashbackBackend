@@ -1,5 +1,3 @@
-require('getmodule')
-
 const express = require('express')
 const routes = express.Router()
 const products = getmodule('src/controllers/products-controller')

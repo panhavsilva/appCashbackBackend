@@ -1,5 +1,3 @@
-require('getmodule')
-
 const uuid = require('uuid')
 
 const db = getmodule('src/services/db')
@@ -15,10 +13,9 @@ module.exports = {
       console.log('Error: ', error)
 
       return res.status(400)
-        .json(createErrorMessage('Error list product'))
+        .json(createErrorMessage('Product list error'))
     }
 
-    /*return res.json(Object.values(data.products))*/
   },
   async show(req, res) {
     const { id } = req.params
@@ -48,11 +45,13 @@ module.exports = {
         return res.json(createErrorMessage('Please, fill all fields!'))
       }
     }
+    const item = {
+      id: uuid.v4(),
+      name: req.body.name,
+      price: onlyNumber(req.body.price)
+    }
 
-    const { name, price } = req.body
-    const id = uuid.v4()
-    const priceNumber = onlyNumber(price)
-    if (priceNumber === '' && priceNumber !== 0) {
+    if (item.price === '' && item.price !== 0) {
       return res.json(
         createErrorMessage('Please, correctly fill in the price field!')
       )
@@ -60,7 +59,7 @@ module.exports = {
 
     try {
       const newProduct = await db.collection('products')
-        .insertOne({ id, name, price: priceNumber })
+        .insertOne(item)
 
       return res.json(Object.values(newProduct.ops))
 
@@ -89,10 +88,12 @@ module.exports = {
     }
 
     try {
-      const name = req.body.name || foundProduct.name
-      const priceNumber = onlyNumber(req.body.price) || foundProduct.price
-      if (priceNumber === '' && priceNumber !== 0) {
-        console.log('PriceNumber ', priceNumber)
+      const item = {
+        name: req.body.name || foundProduct.name,
+        price: onlyNumber(req.body.price) || foundProduct.price
+      }
+
+      if (item.price === '' && item.price !== 0) {
         return res.json(
           createErrorMessage('Please, correctly fill in the price field!')
         )
@@ -100,7 +101,7 @@ module.exports = {
 
       await col.findOneAndUpdate(
         { id: id },
-        { $set: { name: name, price: priceNumber } }
+        { $set: item }
       )
 
       const editedProduct = await col.findOne({ id: id })

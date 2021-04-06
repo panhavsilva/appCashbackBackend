@@ -50,10 +50,10 @@ module.exports = {
     const productsID = productsOrder.map((product) => { return product.id })
     const productsDatabase = await products.find({ id: { $in: productsID } })
       .toArray()
-    for (i = 0; i < productsOrder.length; i++) {
-      for (r = 0; r < productsDatabase.length; r++) {
-        if (productsOrder[i].id === productsDatabase[r].id) {
-          productsDatabase[r].quantity = productsOrder[i].quantity
+    for (const item of productsOrder) {
+      for (const product of productsDatabase) {
+        if (item.id === product.id) {
+          product.quantity = item.quantity
         }
       }
     }
@@ -105,10 +105,10 @@ module.exports = {
     const productsID = newProductsOrder.map((product) => { return product.id })
     const productsDatabase = await products.find({ id: { $in: productsID } })
       .toArray()
-    for (i = 0; i < newProductsOrder.length; i++) {
-      for (r = 0; r < productsDatabase.length; r++) {
-        if (newProductsOrder[i].id === productsDatabase[r].id) {
-          productsDatabase[r].quantity = newProductsOrder[i].quantity
+    for (const item of newProductsOrder) {
+      for (const product of productsDatabase) {
+        if (item.id === product.id) {
+          product.quantity = item.quantity
         }
       }
     }

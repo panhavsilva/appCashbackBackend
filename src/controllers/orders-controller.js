@@ -40,26 +40,35 @@ module.exports = {
   },
   async create(req, res) {
     const keys = Object.keys(req.body)
-    const productsOrder = req.body
-    const productsID = productsOrder.map((product) => { return product.id })
-    const productsDatabase = await products.find({ id: { $in: productsID } })
-      .toArray()
-    const orderTotalValue = productsDatabase.reduce((total, item) => {
-      return total + item.price
-    }, 0)
-    const totalOrderProduct = productsOrder.reduce(
-      function (total, item) { return total + item.quantity }, 0
-    )
-
     for (key of keys) {
       if (req.body[key] === '') {
         return res.json(createErrorMessage('Please, fill all fields!'))
       }
     }
+
+    const productsOrder = req.body
+    const productsID = productsOrder.map((product) => { return product.id })
+    const productsDatabase = await products.find({ id: { $in: productsID } })
+      .toArray()
+    for (i = 0; i < productsOrder.length; i++) {
+      for (r = 0; r < productsDatabase.length; r++) {
+        if (productsOrder[i].id === productsDatabase[r].id) {
+          productsDatabase[r].quantity = productsOrder[i].quantity
+        }
+      }
+    }
+    const orderTotalValue = productsDatabase.reduce((total, item) => {
+      const result = total + (item.quantity * item.price)
+      return parseFloat(result.toFixed(2))
+    }, 0)
+    const totalOrderProduct = productsOrder.reduce((total, item) => {
+      return total + item.quantity
+    }, 0)
+
     const item = {
       id: uuid.v4(),
       total: orderTotalValue,
-      quantidade: totalOrderProduct,
+      quantity: totalOrderProduct,
       products: productsOrder
     }
 
@@ -86,25 +95,38 @@ module.exports = {
     }
 
     const keys = Object.keys(req.body)
-
     for (key of keys) {
       if (req.body[key] === '') {
         return res.json(createErrorMessage('Please, fill all fields!'))
       }
     }
 
-    try {
-      /*const item = {
-        name: req.body.name || foundOrder.name,
-        price: transformToDecimalNumber(req.body.price) || foundOrder.price
-      }*/
-
-      if (item.price === '' && item.price !== 0) {
-        return res.json(
-          createErrorMessage('Please, correctly fill in the price field!')
-        )
+    const newProductsOrder = req.body
+    const productsID = newProductsOrder.map((product) => { return product.id })
+    const productsDatabase = await products.find({ id: { $in: productsID } })
+      .toArray()
+    for (i = 0; i < newProductsOrder.length; i++) {
+      for (r = 0; r < productsDatabase.length; r++) {
+        if (newProductsOrder[i].id === productsDatabase[r].id) {
+          productsDatabase[r].quantity = newProductsOrder[i].quantity
+        }
       }
+    }
+    const orderTotalValue = productsDatabase.reduce((total, item) => {
+      const result = total + (item.quantity * item.price)
+      return parseFloat(result.toFixed(2))
+    }, 0)
+    const totalOrderProduct = newProductsOrder.reduce((total, item) => {
+      return total + item.quantity
+    }, 0)
 
+    const item = {
+      total: orderTotalValue,
+      quantity: totalOrderProduct,
+      products: newProductsOrder
+    }
+
+    try {
       await col.findOneAndUpdate(
         { id: id },
         { $set: item }
@@ -146,21 +168,4 @@ module.exports = {
 
 function createErrorMessage(message) {
   return { message: message, error: true }
-}
-
-function transformToDecimalNumber(price) {
-  if (typeof price === ('number')) {
-    return price
-  }
-
-  const priceString = String(price).replace(/\D*/g, '')
-  const priceDecimal = priceString.replace(/(\d\d)$/g, '.$1')
-
-  if (priceDecimal === '') {
-    return priceDecimal
-  }
-
-  const priceNumber = Number(priceDecimal)
-
-  return priceNumber
 }

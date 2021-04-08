@@ -1,13 +1,18 @@
 const uuid = require('uuid')
 
-const db = getmodule('src/services/db')
+const { db } = getmodule('src/services/db')
 const col = db.collection('orders')
 const products = db.collection('products')
 
 module.exports = {
   async list(req, res) {
     try {
-      const orders = await col.find({}).toArray()
+      const ordersDB = await col.find({}).toArray()
+      const orders = ordersDB.map((order) => {
+        const { ['_id']: idMongo, ...orderNoIdMongo } = order
+        return orderNoIdMongo
+      })
+
       return res.json(orders)
 
     } catch (error) {
@@ -21,7 +26,7 @@ module.exports = {
   async show(req, res) {
     const { id } = req.params
     try {
-      const order = await col.findOne({ id: id })
+      const { ['_id']: idMongo, ...order } = await col.findOne({ id: id })
 
       if (order === null) {
         return res.status(400)
@@ -48,8 +53,13 @@ module.exports = {
 
     const productsOrder = req.body
     const productsID = productsOrder.map((product) => { return product.id })
-    const productsDatabase = await products.find({ id: { $in: productsID } })
+    const productsDB = await products.find({ id: { $in: productsID } })
       .toArray()
+    const productsDatabase = productsDB.map((product) => {
+      const { ['_id']: idMongo, ...productNoIdMongo } = product
+      return productNoIdMongo
+    })
+
     for (const item of productsOrder) {
       for (const product of productsDatabase) {
         if (item.id === product.id) {
@@ -57,6 +67,7 @@ module.exports = {
         }
       }
     }
+
     const orderTotalValue = productsDatabase.reduce((total, item) => {
       const result = total + (item.quantity * item.price)
       return parseFloat(result.toFixed(2))
@@ -69,14 +80,15 @@ module.exports = {
       id: uuid.v4(),
       total: orderTotalValue,
       quantity: totalOrderProduct,
-      products: productsOrder
+      products: productsDatabase
     }
 
     try {
-      const newOrder = await db.collection('orders')
+      const newOrderDB = await db.collection('orders')
         .insertOne(item)
+      const { ['_id']: idMongo, ...newOrder } = newOrderDB.ops[0]
 
-      return res.json(Object.values(newOrder.ops))
+      return res.json(newOrder)
 
     } catch (error) {
       console.log('Error: ', error)
@@ -103,8 +115,13 @@ module.exports = {
 
     const newProductsOrder = req.body
     const productsID = newProductsOrder.map((product) => { return product.id })
-    const productsDatabase = await products.find({ id: { $in: productsID } })
+    const productsDB = await products.find({ id: { $in: productsID } })
       .toArray()
+    const productsDatabase = productsDB.map((product) => {
+      const { ['_id']: idMongo, ...productNoIdMongo } = product
+      return productNoIdMongo
+    })
+
     for (const item of newProductsOrder) {
       for (const product of productsDatabase) {
         if (item.id === product.id) {
@@ -112,6 +129,7 @@ module.exports = {
         }
       }
     }
+
     const orderTotalValue = productsDatabase.reduce((total, item) => {
       const result = total + (item.quantity * item.price)
       return parseFloat(result.toFixed(2))
@@ -123,7 +141,7 @@ module.exports = {
     const item = {
       total: orderTotalValue,
       quantity: totalOrderProduct,
-      products: newProductsOrder
+      products: productsDatabase
     }
 
     try {
@@ -132,7 +150,7 @@ module.exports = {
         { $set: item }
       )
 
-      const editedOrder = await col.findOne({ id: id })
+      const { ['_id']: idMongo, ...editedOrder } = await col.findOne({ id: id })
 
       res.json(editedOrder)
 

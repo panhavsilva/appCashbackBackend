@@ -1,12 +1,16 @@
 const uuid = require('uuid')
 
-const db = getmodule('src/services/db')
+const { db } = getmodule('src/services/db')
 const col = db.collection('cashbackRanges')
 
 module.exports = {
   async list(req, res) {
     try {
-      const cashbackRanges = await col.find({}).toArray()
+      const cashbackRangesDB = await col.find({}).toArray()
+      const cashbackRanges = cashbackRangesDB.map((cashback) => {
+        const { ['_id']: idMongo, ...cashbackNoIdMongo } = cashback
+        return cashbackNoIdMongo
+      })
       return res.json(cashbackRanges)
 
     } catch (error) {
@@ -19,40 +23,33 @@ module.exports = {
   },
   async create(req, res) {
     const keys = Object.keys(req.body)
-
     for (key of keys) {
       if (req.body[key] === '') {
         return res.json(createErrorMessage('Please, fill all fields!'))
       }
     }
+
     const item = {
       id: uuid.v4(),
       name: req.body.name,
-      initial: transformToDecimalNumber(req.body.initial),
-      final: transformToDecimalNumber(req.body.final)
+      initial: idNumber(req.body.initial),
+      final: idNumber(req.body.final)
     }
 
     if (
-      item.initial === '' && item.initial !== 0
+      item.initial === null || item.final === null
     ) {
       return res.json(
         createErrorMessage('Please, correctly fill in the initial value field!')
       )
     }
 
-    if (
-      item.final === '' && item.final !== 0
-    ) {
-      return res.json(
-        createErrorMessage('Please, correctly fill in the final value field!')
-      )
-    }
-
     try {
       const newCashback = await db.collection('cashbackRanges')
         .insertOne(item)
+      const { ['_id']: idMongo, ...cashback } = newCashback.ops[0]
 
-      return res.json(Object.values(newCashback.ops))
+      return res.json(cashback)
 
     } catch (error) {
       console.log('Error: ', error)
@@ -71,42 +68,33 @@ module.exports = {
     }
 
     const keys = Object.keys(req.body)
-
     for (key of keys) {
       if (req.body[key] === '') {
         return res.json(createErrorMessage('Please, fill all fields!'))
       }
     }
 
+    const item = {
+      name: req.body.name || foundCashbackRange.name,
+      initial: idNumber(req.body.initial) || foundCashbackRange.initial,
+      final: idNumber(req.body.final) || foundCashbackRange.final
+    }
+
+    if (
+      item.initial === null || item.final === null
+    ) {
+      return res.json(
+        createErrorMessage('Please, correctly fill in the initial value field!')
+      )
+    }
+
     try {
-      const item = {
-        name: req.body.name || foundCashbackRange.name,
-        initial: transformToDecimalNumber(req.body.initial) || foundCashbackRange.initial,
-        final: transformToDecimalNumber(req.body.final) || foundCashbackRange.final
-      }
-
-      if (
-        item.initial === '' && item.initial !== 0
-      ) {
-        return res.json(
-          createErrorMessage('Please, correctly fill in the initial value field!')
-        )
-      }
-
-      if (
-        item.final === '' && item.final !== 0
-      ) {
-        return res.json(
-          createErrorMessage('Please, correctly fill in the final value field!')
-        )
-      }
-
       await col.findOneAndUpdate(
         { id: id },
         { $set: item }
       )
 
-      const editedCashbackRange = await col.findOne({ id: id })
+      const { ['_id']: idMongo, ...editedCashbackRange } = await col.findOne({ id: id })
 
       res.json(editedCashbackRange)
 
@@ -144,19 +132,10 @@ function createErrorMessage(message) {
   return { message: message, error: true }
 }
 
-function transformToDecimalNumber(price) {
-  if (typeof price === ('number')) {
-    return price
+function idNumber(price) {
+  if (typeof price !== ('number')) {
+    return null
   }
 
-  const priceString = String(price).replace(/\D*/g, '')
-  const priceDecimal = priceString.replace(/(\d\d)$/g, '.$1')
-
-  if (priceDecimal === '') {
-    return priceDecimal
-  }
-
-  const priceNumber = Number(priceDecimal)
-
-  return priceNumber
+  return price
 }

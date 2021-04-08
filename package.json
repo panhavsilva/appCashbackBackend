@@ -4,7 +4,8 @@
   "description": "Project Cashback",
   "main": "routes.js",
   "scripts": {
-    "start": "nodemon src/app.js"
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,7 @@
   "homepage": "https://github.com/panhavsilva/appCashbackBackend#readme",
   "dependencies": {
     "cors": "2.8.5",
+    "dotenv": "8.2.0",
     "express": "4.17.1",
     "getmodule": "1.0.0",
     "method-override": "3.0.0",

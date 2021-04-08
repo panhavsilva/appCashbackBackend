@@ -1,12 +1,16 @@
 const uuid = require('uuid')
 
-const db = getmodule('src/services/db')
+const { db } = getmodule('src/services/db')
 const col = db.collection('products')
 
 module.exports = {
   async list(req, res) {
     try {
-      const products = await col.find({}).toArray()
+      const productsDB = await col.find({}).toArray()
+      const products = productsDB.map((product) => {
+        const { ['_id']: idMongo, ...productNoIdMongo } = product
+        return productNoIdMongo
+      })
       return res.json(products)
 
     } catch (error) {
@@ -20,7 +24,7 @@ module.exports = {
   async show(req, res) {
     const { id } = req.params
     try {
-      const product = await col.findOne({ id: id })
+      const { ['_id']: idMongo, ...product } = await col.findOne({ id: id })
 
       if (product === null) {
         return res.status(400)
@@ -48,10 +52,10 @@ module.exports = {
     const item = {
       id: uuid.v4(),
       name: req.body.name,
-      price: transformToDecimalNumber(req.body.price)
+      price: isNumber(req.body.price)
     }
 
-    if (item.price === '' && item.price !== 0) {
+    if (item.price === null) {
       return res.json(
         createErrorMessage('Please, correctly fill in the price field!')
       )
@@ -60,8 +64,9 @@ module.exports = {
     try {
       const newProduct = await db.collection('products')
         .insertOne(item)
+      const { ['_id']: idMongo, ...product } = newProduct.ops[0]
 
-      return res.json(Object.values(newProduct.ops))
+      return res.json(product)
 
     } catch (error) {
       console.log('Error: ', error)
@@ -80,31 +85,29 @@ module.exports = {
     }
 
     const keys = Object.keys(req.body)
-
     for (key of keys) {
       if (req.body[key] === '') {
         return res.json(createErrorMessage('Please, fill all fields!'))
       }
     }
 
+    const item = {
+      name: req.body.name || foundProduct.name,
+      price: isNumber(req.body.price) || foundProduct.price
+    }
+    if (item.price === null) {
+      return res.json(
+        createErrorMessage('Please, correctly fill in the price field!')
+      )
+    }
+
     try {
-      const item = {
-        name: req.body.name || foundProduct.name,
-        price: transformToDecimalNumber(req.body.price) || foundProduct.price
-      }
-
-      if (item.price === '' && item.price !== 0) {
-        return res.json(
-          createErrorMessage('Please, correctly fill in the price field!')
-        )
-      }
-
       await col.findOneAndUpdate(
         { id: id },
         { $set: item }
       )
 
-      const editedProduct = await col.findOne({ id: id })
+      const { ['_id']: idMongo, ...editedProduct } = await col.findOne({ id: id })
 
       res.json(editedProduct)
 
@@ -142,19 +145,10 @@ function createErrorMessage(message) {
   return { message: message, error: true }
 }
 
-function transformToDecimalNumber(price) {
-  if (typeof price === ('number')) {
-    return price
+function isNumber(price) {
+  if (typeof price !== ('number')) {
+    return null
   }
 
-  const priceString = String(price).replace(/\D*/g, '')
-  const priceDecimal = priceString.replace(/(\d\d)$/g, '.$1')
-
-  if (priceDecimal === '') {
-    return priceDecimal
-  }
-
-  const priceNumber = Number(priceDecimal)
-
-  return priceNumber
+  return price
 }

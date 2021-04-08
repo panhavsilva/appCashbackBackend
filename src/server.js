@@ -20,4 +20,7 @@ server.use(methodOverride('_method'))
 server.use(cors(corsOptions))
 server.use(routes)
 
-module.exports = server
+server.listen(process.env.PORT, () => {
+  console.log('Server is running...')
+})
+

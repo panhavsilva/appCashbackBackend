@@ -17,6 +17,7 @@ Create a copy of the file .env.example called .env. Then, just configure some en
 * `PORT`
 * `MONGO_URL`
 * `MONGO_DB_NAME`
+* `CORS_ORIGINS`
 
 ## Deploy
 This repository is ready to run inside Heroku.

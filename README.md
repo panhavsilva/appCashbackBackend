@@ -3,7 +3,7 @@
 [![NPM](https://img.shields.io/npm/v/@fdaciuk/use-timer.svg)](https://www.npmjs.com/package/@fdaciuk/use-timer) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Usage
-[click here!](https://backend-cashback.herokuapp.com/)
+[https://backend-cashback.herokuapp.com/](https://backend-cashback.herokuapp.com/)
 
 ## Install
 * Install dependencies `npm install`

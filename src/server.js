@@ -8,6 +8,7 @@ const routes = getmodule('src/routes')
 const server = express()
 
 const corsOptions = {
+  origin: process.env.URL,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   preflightContinue: false,
   optionsSucessStatus: 204

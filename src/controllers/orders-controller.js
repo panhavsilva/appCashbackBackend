@@ -51,36 +51,36 @@ module.exports = {
       }
     }
 
-    const productsOrder = req.body
-    const productsID = productsOrder.map((product) => { return product.id })
-    const productsDB = await products.find({ id: { $in: productsID } })
+    const productsFront = req.body
+    const productsID = productsFront.map((product) => { return product.id })
+    const productsDatabase = await products.find({ id: { $in: productsID } })
       .toArray()
-    const productsDatabase = productsDB.map((product) => {
+    const productsOrder = productsDatabase.map((product) => {
       const { ['_id']: idMongo, ...productNoIdMongo } = product
       return productNoIdMongo
     })
 
-    for (const item of productsOrder) {
-      for (const product of productsDatabase) {
+    for (const item of productsFront) {
+      for (const product of productsOrder) {
         if (item.id === product.id) {
-          product.quantity = item.quantity
+          product.quantity = Number(item.quantity)
         }
       }
     }
 
-    const orderTotalValue = productsDatabase.reduce((total, item) => {
-      const result = total + (item.quantity * item.price)
-      return parseFloat(result.toFixed(2))
+    const orderTotalValue = productsOrder.reduce((total, item) => {
+      total = total + (item.quantity * item.price)
+      return parseFloat(total.toFixed(2))
     }, 0)
-    const totalOrderProduct = productsOrder.reduce((total, item) => {
-      return total + item.quantity
+    const totalOrderProduct = productsFront.reduce((total, item) => {
+      return Number(total + item.quantity)
     }, 0)
 
     const item = {
       id: uuid.v4(),
       total: orderTotalValue,
       quantity: totalOrderProduct,
-      products: productsDatabase
+      products: productsOrder
     }
 
     try {
@@ -113,35 +113,35 @@ module.exports = {
       }
     }
 
-    const newProductsOrder = req.body
-    const productsID = newProductsOrder.map((product) => { return product.id })
-    const productsDB = await products.find({ id: { $in: productsID } })
+    const productsFront = req.body
+    const productsID = productsFront.map((product) => { return product.id })
+    const productsDatabase = await products.find({ id: { $in: productsID } })
       .toArray()
-    const productsDatabase = productsDB.map((product) => {
+    const productsOrder = productsDatabase.map((product) => {
       const { ['_id']: idMongo, ...productNoIdMongo } = product
       return productNoIdMongo
     })
 
-    for (const item of newProductsOrder) {
-      for (const product of productsDatabase) {
+    for (const item of productsFront) {
+      for (const product of productsOrder) {
         if (item.id === product.id) {
-          product.quantity = item.quantity
+          product.quantity = Number(item.quantity)
         }
       }
     }
 
-    const orderTotalValue = productsDatabase.reduce((total, item) => {
-      const result = total + (item.quantity * item.price)
-      return parseFloat(result.toFixed(2))
+    const orderTotalValue = productsOrder.reduce((total, item) => {
+      total = total + (item.quantity * item.price)
+      return parseFloat(total.toFixed(2))
     }, 0)
-    const totalOrderProduct = newProductsOrder.reduce((total, item) => {
-      return total + item.quantity
+    const totalOrderProduct = productsFront.reduce((total, item) => {
+      return Number(total + item.quantity)
     }, 0)
 
     const item = {
       total: orderTotalValue,
       quantity: totalOrderProduct,
-      products: productsDatabase
+      products: productsOrder
     }
 
     try {

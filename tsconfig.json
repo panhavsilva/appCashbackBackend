@@ -10,6 +10,8 @@
     "rootDir": "./src",
     "removeComments": true,
     "strict": true,
+    "baseUrl": "./",
+    "paths": {},
     "typeRoots": [
       "./node_modules/@types"
     ],

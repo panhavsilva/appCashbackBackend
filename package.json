@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
-    "dev:server": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules src/server.ts"
+    "dev:server": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules src/server.ts"
   },
   "repository": {
     "type": "git",
@@ -40,6 +40,7 @@
     "nodemon": "2.0.7",
     "standard": "16.0.3",
     "ts-node-dev": "1.1.6",
+    "tsconfig-paths": "3.9.0",
     "typescript": "4.2.4"
   }
 }

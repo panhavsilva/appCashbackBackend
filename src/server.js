@@ -1,9 +1,7 @@
-
 const express = require('express')
 const cors = require('cors')
 const methodOverride = require('method-override')
 const routes = getmodule('src/routes')
-
 
 const server = express()
 

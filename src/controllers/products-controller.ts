@@ -1,10 +1,14 @@
-const uuid = require('uuid')
+import uuid from 'uuid'
+import { Request, Response } from 'express'
+import { createErrorMessage, isNumber } from '@/helpers'
 
-const { db } = getmodule('src/services/db')
+import mongo from '@/services/db'
+const { db } = mongo
 const col = db.collection('products')
 
-module.exports = {
-  async list(req, res) {
+
+export default {
+  async list(_req: Request, res: Response) {
     try {
       const productsDB = await col.find({}).toArray()
       const products = productsDB.map((product) => {
@@ -21,7 +25,7 @@ module.exports = {
     }
 
   },
-  async show(req, res) {
+  async show(req: Request, res: Response) {
     const { id } = req.params
     try {
       const { ['_id']: idMongo, ...product } = await col.findOne({ id: id })
@@ -41,24 +45,23 @@ module.exports = {
     }
 
   },
-  async create(req, res) {
+  async create(req: Request, res: Response) {
     const keys = Object.keys(req.body)
 
-    for (key of keys) {
+    for (const key of keys) {
       if (req.body[key] === '') {
         return res.json(createErrorMessage('Please, fill all fields!'))
       }
     }
+
+    if (!isNumber(req.body.price)) {
+      return res.status(401).json(createErrorMessage('Price field is not number!'))
+    }
+
     const item = {
       id: uuid.v4(),
       name: req.body.name,
-      price: isNumber(req.body.price)
-    }
-
-    if (item.price === null) {
-      return res.json(
-        createErrorMessage('Please, correctly fill in the price field!')
-      )
+      price: req.body.price
     }
 
     try {
@@ -76,7 +79,7 @@ module.exports = {
     }
 
   },
-  async edit(req, res) {
+  async edit(req: Request, res: Response) {
     const { id } = req.params
     const foundProduct = await col.findOne({ id: id })
     if (foundProduct === null) {
@@ -85,20 +88,20 @@ module.exports = {
     }
 
     const keys = Object.keys(req.body)
-    for (key of keys) {
+    for (const key of keys) {
       if (req.body[key] === '') {
         return res.json(createErrorMessage('Please, fill all fields!'))
       }
     }
 
+    if (!isNumber(req.body.price)) {
+      return res.status(401).json(createErrorMessage('Price field is not number!'))
+    }
+
+
     const item = {
       name: req.body.name || foundProduct.name,
-      price: isNumber(req.body.price) || foundProduct.price
-    }
-    if (item.price === null) {
-      return res.json(
-        createErrorMessage('Please, correctly fill in the price field!')
-      )
+      price: req.body.price || foundProduct.price
     }
 
     try {
@@ -109,7 +112,7 @@ module.exports = {
 
       const { ['_id']: idMongo, ...editedProduct } = await col.findOne({ id: id })
 
-      res.json(editedProduct)
+      return res.json(editedProduct)
 
     } catch (error) {
       console.log('Error: ', error)
@@ -119,7 +122,7 @@ module.exports = {
     }
 
   },
-  async delete(req, res) {
+  async delete(req: Request, res: Response) {
     const { id } = req.params
     const foundProduct = await col.findOne({ id: id })
     if (foundProduct === null) {
@@ -139,16 +142,4 @@ module.exports = {
     }
 
   }
-}
-
-function createErrorMessage(message) {
-  return { message: message, error: true }
-}
-
-function isNumber(price) {
-  if (typeof price !== ('number')) {
-    return null
-  }
-
-  return price
 }

@@ -2,11 +2,10 @@
   "name": "appCashbackBackend",
   "version": "1.0.0",
   "description": "Project Cashback",
-  "main": "routes.js",
   "scripts": {
-    "start": "node src/app.js",
-    "dev": "nodemon src/app.js",
-    "dev:server": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules src/server.ts"
+    "start": "node dist/app.js",
+    "dev": "nodemon --exec 'sucrase-node' src/app.ts",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -21,6 +20,7 @@
   "homepage": "https://github.com/panhavsilva/appCashbackBackend#readme",
   "dependencies": {
     "@types/node": "14.14.37",
+    "@types/uuid": "8.3.0",
     "cors": "2.8.5",
     "dotenv": "8.2.0",
     "express": "4.17.1",
@@ -32,6 +32,7 @@
   "devDependencies": {
     "@types/cors": "2.8.10",
     "@types/express": "4.17.11",
+    "@types/mongodb": "3.6.12",
     "eslint": "7.23.0",
     "eslint-config-standard": "16.0.2",
     "eslint-plugin-import": "2.22.1",
@@ -39,7 +40,7 @@
     "eslint-plugin-promise": "4.3.1",
     "nodemon": "2.0.7",
     "standard": "16.0.3",
-    "ts-node-dev": "1.1.6",
+    "sucrase": "3.18.1",
     "tsconfig-paths": "3.9.0",
     "typescript": "4.2.4"
   }

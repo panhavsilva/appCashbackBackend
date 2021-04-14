@@ -1,11 +1,19 @@
-const uuid = require('uuid')
+import uuid from 'uuid'
+import { Request, Response } from 'express'
+import { createErrorMessage } from '@/helpers'
 
-const { db } = getmodule('src/services/db')
+import mongo from '@/services/db'
+const { db } = mongo
 const col = db.collection('orders')
 const products = db.collection('products')
 
-module.exports = {
-  async list(req, res) {
+type OrderBody = {
+  id: string
+  quantity: number
+}
+
+export default {
+  async list(_req: Request, res: Response) {
     try {
       const ordersDB = await col.find({}).toArray()
       const orders = ordersDB.map((order) => {
@@ -23,7 +31,7 @@ module.exports = {
     }
 
   },
-  async show(req, res) {
+  async show(req: Request, res: Response) {
     const { id } = req.params
     try {
       const { ['_id']: idMongo, ...order } = await col.findOne({ id: id })
@@ -43,15 +51,15 @@ module.exports = {
     }
 
   },
-  async create(req, res) {
+  async create(req: Request, res: Response) {
     const keys = Object.keys(req.body)
-    for (key of keys) {
+    for (const key of keys) {
       if (req.body[key] === '') {
         return res.json(createErrorMessage('Please, fill all fields!'))
       }
     }
 
-    const productsFront = req.body
+    const productsFront: OrderBody[] = req.body
     const productsID = productsFront.map((product) => { return product.id })
     const productsDatabase = await products.find({ id: { $in: productsID } })
       .toArray()
@@ -98,7 +106,7 @@ module.exports = {
     }
 
   },
-  async edit(req, res) {
+  async edit(req: Request, res: Response) {
     const { id } = req.params
     const foundOrder = await col.findOne({ id: id })
     if (foundOrder === null) {
@@ -107,13 +115,13 @@ module.exports = {
     }
 
     const keys = Object.keys(req.body)
-    for (key of keys) {
+    for (const key of keys) {
       if (req.body[key] === '') {
         return res.json(createErrorMessage('Please, fill all fields!'))
       }
     }
 
-    const productsFront = req.body
+    const productsFront: OrderBody[] = req.body
     const productsID = productsFront.map((product) => { return product.id })
     const productsDatabase = await products.find({ id: { $in: productsID } })
       .toArray()
@@ -152,7 +160,7 @@ module.exports = {
 
       const { ['_id']: idMongo, ...editedOrder } = await col.findOne({ id: id })
 
-      res.json(editedOrder)
+      return res.json(editedOrder)
 
     } catch (error) {
       console.log('Error: ', error)
@@ -162,7 +170,7 @@ module.exports = {
     }
 
   },
-  async delete(req, res) {
+  async delete(req: Request, res: Response) {
     const { id } = req.params
     const foundOrder = await col.findOne({ id: id })
     if (foundOrder === null) {
@@ -184,6 +192,3 @@ module.exports = {
   }
 }
 
-function createErrorMessage(message) {
-  return { message: message, error: true }
-}

@@ -1,8 +1,8 @@
-const express = require('express')
-const routes = express.Router()
-const products = getmodule('src/controllers/products-controller')
-const cashbackRanges = getmodule('src/controllers/cashback-controller')
-const orders = getmodule('src/controllers/orders-controller')
+import { Router } from 'express';
+const routes = Router();
+import products from '@/controllers/products-controller';
+import cashbackRanges from '@/controllers/cashback-controller';
+import orders from '@/controllers/orders-controller';
 
 routes.get('/products', products.list)
 routes.get('/products/:id/show', products.show)
@@ -24,4 +24,4 @@ routes.post('/orders', orders.create)
 routes.put('/orders/:id', orders.edit)
 routes.delete('/orders/:id', orders.delete)
 
-module.exports = routes
+export default routes;

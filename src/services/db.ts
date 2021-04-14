@@ -1,13 +1,14 @@
-const MongoClient = require('mongodb').MongoClient
+import { MongoClient, Db } from 'mongodb';
 
 const urlMongo = process.env.MONGO_URL
 
 const dbName = process.env.MONGO_DB_NAME;
 
 const mongo = {
-  db: {},
+  db: {} as Db,
   boot: async () => {
     const client = new MongoClient(urlMongo, { useUnifiedTopology: true });
+    console.log(urlMongo)
 
     await client.connect()
     mongo.db = client.db(dbName)
@@ -16,4 +17,4 @@ const mongo = {
   }
 }
 
-module.exports = mongo
+export default mongo

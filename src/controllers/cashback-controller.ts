@@ -1,10 +1,13 @@
-const uuid = require('uuid')
+import uuid from 'uuid'
+import { Request, Response } from 'express'
+import { createErrorMessage, isNumber } from '@/helpers'
 
-const { db } = getmodule('src/services/db')
+import mongo from '@/services/db'
+const { db } = mongo
 const col = db.collection('cashbackRanges')
 
-module.exports = {
-  async list(req, res) {
+export default {
+  async list(_req: Request, res: Response) {
     try {
       const cashbackRangesDB = await col.find({}).toArray()
       const cashbackRanges = cashbackRangesDB.map((cashback) => {
@@ -21,27 +24,24 @@ module.exports = {
     }
 
   },
-  async create(req, res) {
+  async create(req: Request, res: Response) {
     const keys = Object.keys(req.body)
-    for (key of keys) {
+    for (const key of keys) {
       if (req.body[key] === '') {
         return res.json(createErrorMessage('Please, fill all fields!'))
       }
     }
 
+    if (!isNumber(req.body.initial) || !isNumber(req.body.final)) {
+      return res.status(401).json(createErrorMessage('Please, correctly fill in the initial value field!'))
+    }
+
+
     const item = {
       id: uuid.v4(),
       name: req.body.name,
-      initial: idNumber(req.body.initial),
-      final: idNumber(req.body.final)
-    }
-
-    if (
-      item.initial === null || item.final === null
-    ) {
-      return res.json(
-        createErrorMessage('Please, correctly fill in the initial value field!')
-      )
+      initial: req.body.initial,
+      final: req.body.final
     }
 
     try {
@@ -59,7 +59,7 @@ module.exports = {
     }
 
   },
-  async edit(req, res) {
+  async edit(req: Request, res: Response) {
     const { id } = req.params
     const foundCashbackRange = await col.findOne({ id: id })
     if (foundCashbackRange === null) {
@@ -68,25 +68,22 @@ module.exports = {
     }
 
     const keys = Object.keys(req.body)
-    for (key of keys) {
+    for (const key of keys) {
       if (req.body[key] === '') {
         return res.json(createErrorMessage('Please, fill all fields!'))
       }
     }
 
-    const item = {
-      name: req.body.name || foundCashbackRange.name,
-      initial: idNumber(req.body.initial) || foundCashbackRange.initial,
-      final: idNumber(req.body.final) || foundCashbackRange.final
+    if (!isNumber(req.body.initial) || !isNumber(req.body.final)) {
+      return res.status(401).json(createErrorMessage('Please, correctly fill in the initial value field!'))
     }
 
-    if (
-      item.initial === null || item.final === null
-    ) {
-      return res.json(
-        createErrorMessage('Please, correctly fill in the initial value field!')
-      )
+    const item = {
+      name: req.body.name || foundCashbackRange.name,
+      initial: req.body.initial || foundCashbackRange.initial,
+      final: req.body.final || foundCashbackRange.final
     }
+
 
     try {
       await col.findOneAndUpdate(
@@ -96,7 +93,7 @@ module.exports = {
 
       const { ['_id']: idMongo, ...editedCashbackRange } = await col.findOne({ id: id })
 
-      res.json(editedCashbackRange)
+      return res.json(editedCashbackRange)
 
     } catch (error) {
       console.log('Error: ', error)
@@ -106,7 +103,7 @@ module.exports = {
     }
 
   },
-  async delete(req, res) {
+  async delete(req: Request, res: Response) {
     const { id } = req.params
     const foundCashbackRange = await col.findOne({ id: id })
     if (foundCashbackRange === null) {
@@ -126,16 +123,4 @@ module.exports = {
     }
 
   }
-}
-
-function createErrorMessage(message) {
-  return { message: message, error: true }
-}
-
-function idNumber(price) {
-  if (typeof price !== ('number')) {
-    return null
-  }
-
-  return price
 }

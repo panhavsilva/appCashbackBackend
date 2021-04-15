@@ -31,7 +31,7 @@ export default {
     }
 
     if (!isNumber(req.body.initial) || !isNumber(req.body.final)) {
-      return res.status(400).json(createErrorMessage('Please, correctly fill field!'))
+      return res.status(400).json(createErrorMessage('Please, fill all fields!'))
     }
 
     const item = {
@@ -70,7 +70,7 @@ export default {
     }
 
     if (!isNumber(req.body.initial) || !isNumber(req.body.final)) {
-      return res.status(400).json(createErrorMessage('Please, correctly fill field!'))
+      return res.status(400).json(createErrorMessage('Please, fill all fields!'))
     }
 
     const item = {

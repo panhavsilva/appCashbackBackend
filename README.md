@@ -107,6 +107,10 @@ This repository is ready to run inside Heroku.
 * **Error Response** <br />
   * **Code:** 404 NOT FOUND <br />
     **Content:** `{ message: "Product not found!", error: true }`
+  OR
+
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ message: "Error show product!", error: true }`
 
 ### Register
   Creates a product and returns json data about the created product.
@@ -140,8 +144,11 @@ This repository is ready to run inside Heroku.
       ```
 * **Error Response** <br />
   * **Code:** 400 BAD REQUEST  <br />
-    **Content:** `{ message: "Error creating new product!", error: true }`
+    **Content:** `{ message: "Error creating new product!", error: true }` <br />
+  OR <br />
 
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ message: "Please, correctly fill fields!", error: true }`
 ### Update
   Updates product data and returns json data about the updated product.
 
@@ -175,8 +182,13 @@ This repository is ready to run inside Heroku.
     ```
 * **Error Response** <br />
   * **Code:** 404 NOT FOUND <br />
-    **Content:** `{ message: "Product not found!", error: true }`
+    **Content:** `{ message: "Product not found!", error: true }` <br />
+  OR <br />
 
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ message: "Please, correctly fill fields!", error: true }` <br />
+    OR <br />
+    **Content:** `{ message: "Error edit product!", error: true }`
 ### Delete
   Deletes the product and returns json data about with deleted product id.
 
@@ -201,6 +213,10 @@ This repository is ready to run inside Heroku.
 * **Error Response** <br />
   * **Code:** 404 NOT FOUND <br />
     **Content:** `{ message: "Product not found!", error: true }`
+  OR <br />
+
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ message: "Error delete product!", error: true }` <br />
 
 ---
 ## ORDERS
@@ -298,6 +314,10 @@ This repository is ready to run inside Heroku.
 * **Error Response** <br />
   * **Code:** 404 NOT FOUND <br />
     **Content:** `{ message: "Order not found!", error: true }`
+  OR <br />
+
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ message: "Error show order!", error: true }` <br />
 
 ### Register
   Creates a order and returns json data about the created order.
@@ -353,6 +373,10 @@ This repository is ready to run inside Heroku.
 * **Error Response** <br />
   * **Code:** 400 BAD REQUEST  <br />
     **Content:** `{ message: "Error creating new order!", error: true }`
+  OR <br />
+
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ message: "Please, fill all fields!", error: true }` <br />
 
 ### Update
   Updates order data and returns json data about the updated order.
@@ -408,6 +432,12 @@ This repository is ready to run inside Heroku.
 * **Error Response** <br />
   * **Code:** 404 NOT FOUND <br />
     **Content:** `{ message: "Order not found!", error: true }`
+  OR <br />
+
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ message: "Please, fill all fields!", error: true }` <br />
+    OR <br />
+    **Content:** `{ message: "Error edit order!", error: true }` <br />
 
 ### Delete
   Deletes the order and returns json data about with deleted order id.
@@ -433,6 +463,10 @@ This repository is ready to run inside Heroku.
 * **Error Response** <br />
   * **Code:** 404 NOT FOUND <br />
     **Content:** `{ message: "Error delete order!", error: true }`
+  OR <br />
+
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ message: "Error delete order!", error: true }` <br />
 
 ---
 ## CASHBACK
@@ -507,6 +541,10 @@ This repository is ready to run inside Heroku.
 * **Error Response** <br />
   * **Code:** 400 BAD REQUEST  <br />
     **Content:** `{ message: "Error creating new cashback range!", error: true }`
+  OR <br />
+
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ message: "Please, fill all fields!", error: true }` <br />
 
 ### Update
   Updates cashback ranges data and returns json data about the updated cashback ranges.
@@ -544,6 +582,12 @@ This repository is ready to run inside Heroku.
 * **Error Response** <br />
   * **Code:** 404 NOT FOUND <br />
     **Content:** `{ message: "Cashback range not found!", error: true }`
+    OR <br />
+
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ message: "Please, fill all fields!", error: true }` <br />
+    OR <br />
+    **Content:** `{ message: "Error edit cashback range!", error: true }` <br />
 
 ### Delete
   Deletes the cashback ranges and returns json data about with deleted cashback ranges id.
@@ -569,3 +613,7 @@ This repository is ready to run inside Heroku.
 * **Error Response** <br />
   * **Code:** 404 NOT FOUND <br />
     **Content:** `{ message: "Cashback range not found!", error: true }`
+    OR <br />
+
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ message: "Error delete cashback range!", error: true }` <br />

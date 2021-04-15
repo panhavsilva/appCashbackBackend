@@ -37,7 +37,7 @@ export default {
       console.log('Error: ', error)
 
       return res.status(400)
-        .json(createErrorMessage('Error show product'))
+        .json(createErrorMessage('Error show product!'))
     }
   },
   async create (req: Request, res: Response) {
@@ -45,12 +45,12 @@ export default {
 
     for (const key of keys) {
       if (req.body[key] === '') {
-        return res.status(400).json(createErrorMessage('Please, fill all fields!'))
+        return res.status(400).json(createErrorMessage('Please, correctly fill fields!'))
       }
     }
 
     if (!isNumber(req.body.price)) {
-      return res.status(400).json(createErrorMessage('Please, correctly fill field!'))
+      return res.status(400).json(createErrorMessage('Please, correctly fill fields!'))
     }
 
     const item = {
@@ -83,7 +83,7 @@ export default {
     const keys = Object.keys(req.body)
     for (const key of keys) {
       if (req.body[key] === '') {
-        return res.status(400).json(createErrorMessage('Please, fill all fields!'))
+        return res.status(400).json(createErrorMessage('Please, correctly fill field!'))
       }
     }
 
@@ -109,7 +109,7 @@ export default {
       console.log('Error: ', error)
 
       return res.status(400)
-        .json(createErrorMessage('Error edit product'))
+        .json(createErrorMessage('Error edit product!'))
     }
   },
   async delete (req: Request, res: Response) {
@@ -127,7 +127,7 @@ export default {
       console.log('Error: ', error)
 
       return res.status(400)
-        .json(createErrorMessage('Error delete product'))
+        .json(createErrorMessage('Error delete product!'))
     }
   }
 }

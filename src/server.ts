@@ -1,10 +1,8 @@
 import express from 'express'
 import cors from 'cors'
-import * as dotenv from 'dotenv'
 import routes from '@/routes'
 
 const server = express()
-dotenv.config()
 
 const corsOptions = {
   origin: process.env.CORS_ORIGINS,

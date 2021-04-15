@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Project Cashback",
   "scripts": {
-    "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/app.js",
+    "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/src/app.js",
     "dev": "nodemon --exec 'sucrase-node' src/app.ts",
     "build": "tsc",
     "lint": "eslint . --ext js,ts",
@@ -28,12 +28,14 @@
     "dotenv": "8.2.0",
     "express": "4.17.1",
     "method-override": "3.0.0",
+    "module-alias": "2.2.2",
     "mongodb": "3.6.5",
     "uuid": "8.3.2"
   },
   "devDependencies": {
     "@types/cors": "2.8.10",
     "@types/express": "4.17.11",
+    "@types/module-alias": "2.0.0",
     "@types/mongodb": "3.6.12",
     "@types/node": "14.14.37",
     "@types/uuid": "8.3.0",

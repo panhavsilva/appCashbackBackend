@@ -5,6 +5,7 @@
     "target": "esnext",
     "module": "commonjs",
     "sourceMap": true,
+    "rootDir": ".",
     "outDir": "./dist",
     /* Strict Type-Checking Options */
     "strict": true,
@@ -30,6 +31,7 @@
         "./src/*"
       ]
     },
+    "rootDirs": ["./src"],
     "esModuleInterop": true,
     "resolveJsonModule": true,
     /* Advanced Options */

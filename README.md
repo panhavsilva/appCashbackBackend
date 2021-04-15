@@ -48,7 +48,7 @@ This repository is ready to run inside Heroku.
 ---
 ## PRODUCTS
 
-**Products List**
+### List All
 Returns json data about all products.
 
 * **URL**
@@ -64,17 +64,47 @@ None
   * **Code:** 200 <br />
     **Content:**
     ```
-    [{
+    [
+      {
+        "id": "f71ce1c6-079d-43e4-88ab-b6ccde593168",
+        "name": "product name1",
+        "price": 14.48
+      },
+      {
+        "id": "9366e349-0c3f-4300-b3b7-76a806b5e2aa",
+        "name": "product name2",
+        "price": 20.21
+      }
+    ]
+    ```
+* **Error Response:**
+  * **Code:** 400 Bad Request <br />
+    **Content:** `{ message: "Error in the list of products!", error: true }`
+
+### Show One
+Returns json data about one product.
+
+* **URL**
+/products/:id/show
+
+* **Method:**
+  `GET`
+
+*  **URL Params**
+  **Required:**
+
+   `id=[string]`
+
+* **Success Response:**
+  * **Code:** 200 <br />
+    **Content:**
+    ```
+    {
       "id": "f71ce1c6-079d-43e4-88ab-b6ccde593168",
       "name": "product name1",
       "price": 14.48
-      },
-      {
-      "id": "9366e349-0c3f-4300-b3b7-76a806b5e2aa",
-      "name": "product name2",
-      "price": 20.21
-    }]
+    }
     ```
 * **Error Response:**
-  * **Code:** 400 NOT FOUND <br />
-    **Content:** `{ message: "Error in the list of products!", error: true }`
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** `{ message: "Product not found!", error: true }`

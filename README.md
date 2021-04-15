@@ -131,7 +131,6 @@ This repository is ready to run inside Heroku.
 * **Success Response** <br />
   * **Code:** 200 <br />
     **Content:** <br />
-      Object containing id, name and price de new product.<br />
       ```
       {
         "id": "f71ce1c6-079d-43e4-88ab-b6ccde593168",
@@ -373,12 +372,12 @@ This repository is ready to run inside Heroku.
   ```
     [
       {
-        "id":"87b74638-333d-483b-99ed-65abca0ceba5",
-        "quantity":4
+        "id":"string",
+        "quantity":number
       },
       {
-        "id":"aefadeaa-9262-42ce-919a-17c24db80aa3",
-        "quantity":4
+        "id":"string",
+        "quantity":number
       }
     ]
   ```
@@ -434,3 +433,139 @@ This repository is ready to run inside Heroku.
 * **Error Response** <br />
   * **Code:** 404 NOT FOUND <br />
     **Content:** `{ message: "Error delete order!", error: true }`
+
+---
+## CASHBACK
+
+### List All
+  Returns json data about all cashback.
+
+* **URL** <br />
+  /cashback
+
+* **Method** <br />
+  `GET`
+
+*  **URL Params** <br />
+  None
+
+* **Success Response** <br />
+  * **Code:** 200 <br />
+    **Content:** <br />
+    ```
+    [
+      {
+        "id": "e4f35560-4cd8-45ef-b261-236b1d6ae0bf",
+        "name": "cashback name1",
+        "initial": 100,
+        "final": 200
+      },
+      {
+        "id": "dc79a257-9f83-43dd-8f5b-abcc44fdca95",
+        "name": "cashback name2",
+        "initial": 200,
+        "final": 300
+      }
+    ]
+    ```
+* **Error Response** <br />
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ message: "Error in the list of cashback ranges!", error: true }`
+
+### Register
+  Creates a cashback ranges and returns json data about the created cashback ranges.
+
+* **URL** <br />
+  /cashback
+
+* **Method** <br />
+  `POST`
+
+*  **URL Params** <br />
+  None
+
+* **Expected frontend data** <br />
+  Required: Name, value initial and value final of the cashback ranges. <br />
+  ```
+    {
+      "name":"string",
+      "initial": number,
+      "final": number
+    }
+  ```
+* **Success Response** <br />
+  * **Code:** 200 <br />
+    **Content:** <br />
+    ```
+    {
+      "id": "e4f35560-4cd8-45ef-b261-236b1d6ae0bf",
+      "name": "cashback name",
+      "initial": 100,
+      "final": 200
+    }
+    ```
+* **Error Response** <br />
+  * **Code:** 400 BAD REQUEST  <br />
+    **Content:** `{ message: "Error creating new cashback range!", error: true }`
+
+### Update
+  Updates cashback ranges data and returns json data about the updated cashback ranges.
+
+* **URL** <br />
+  /cashback/:id
+
+* **Method** <br />
+  `PUT`
+
+*  **URL Params** <br />
+  **Required:** <br />
+   `id=[string]`
+
+* **Expected frontend data** <br />
+  Required: Only one of the properties or more. <br />
+  ```
+    {
+      "name":"string",
+      "initial": number,
+      "final": number
+    }
+  ```
+* **Success Response** <br />
+  * **Code:** 200 <br />
+    **Content:** <br />
+    ```
+    {
+      "id": "17e5dc83-4acb-403d-af7e-8133f50461a4",
+      "name": "cashback name",
+      "initial": 500,
+      "final": 600
+    }
+    ```
+* **Error Response** <br />
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** `{ message: "Cashback range not found!", error: true }`
+
+### Delete
+  Deletes the cashback ranges and returns json data about with deleted cashback ranges id.
+
+* **URL** <br />
+  /cashback/:id
+
+* **Method** <br />
+  `DELETE`
+
+*  **URL Params** <br />
+  **Required:** <br />
+   `id=[string]`
+
+* **Success Response** <br />
+  * **Code:** 200 <br />
+    **Content:** <br />
+    ```
+    {
+      "id": "339b1e16-4c00-4894-8b81-7312db98e531"
+    }
+    ```
+* **Error Response** <br />
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** `{ message: "Cashback range not found!", error: true }`

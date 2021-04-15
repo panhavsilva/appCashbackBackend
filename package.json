@@ -3,19 +3,14 @@
   "private": true,
   "version": "1.0.0",
   "description": "Project Cashback",
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint && npm run type-check",
-      "pre-push": "npm run lint && npm run type-check"
-    }
-  },
   "scripts": {
     "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/app.js",
     "dev": "nodemon --exec 'sucrase-node' src/app.ts",
     "build": "tsc",
     "lint": "eslint . --ext js,ts",
     "lint:fix": "eslint --fix . --ext js,ts",
-    "type-check": "tsc --project tsconfig.json --pretty --noEmit"
+    "type-check": "tsc --project tsconfig.json --pretty --noEmit",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",

@@ -31,7 +31,7 @@ export default {
     }
 
     if (!isNumber(req.body.initial) || !isNumber(req.body.final)) {
-      return res.status(401).json(createErrorMessage('Please, correctly fill in the initial value field!'))
+      return res.status(400).json(createErrorMessage('Please, correctly fill field!'))
     }
 
     const item = {
@@ -58,19 +58,19 @@ export default {
     const { id } = req.params
     const foundCashbackRange = await col.findOne({ id: id })
     if (foundCashbackRange === null) {
-      return res.status(400)
+      return res.status(404)
         .json(createErrorMessage('Cashback range not found!'))
     }
 
     const keys = Object.keys(req.body)
     for (const key of keys) {
       if (req.body[key] === '') {
-        return res.json(createErrorMessage('Please, fill all fields!'))
+        return res.status(400).json(createErrorMessage('Please, fill all fields!'))
       }
     }
 
     if (!isNumber(req.body.initial) || !isNumber(req.body.final)) {
-      return res.status(401).json(createErrorMessage('Please, correctly fill in the initial value field!'))
+      return res.status(400).json(createErrorMessage('Please, correctly fill field!'))
     }
 
     const item = {
@@ -99,7 +99,7 @@ export default {
     const { id } = req.params
     const foundCashbackRange = await col.findOne({ id: id })
     if (foundCashbackRange === null) {
-      return res.status(400)
+      return res.status(404)
         .json(createErrorMessage('Cashback range not found!'))
     }
 

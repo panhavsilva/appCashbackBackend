@@ -35,7 +35,7 @@ export default {
       const { _id: idMongo, ...order } = await col.findOne({ id: id })
 
       if (order === null) {
-        return res.status(400)
+        return res.status(404)
           .json(createErrorMessage('Order not found!'))
       }
 
@@ -51,7 +51,7 @@ export default {
     const keys = Object.keys(req.body)
     for (const key of keys) {
       if (req.body[key] === '') {
-        return res.json(createErrorMessage('Please, fill all fields!'))
+        return res.status(400).json(createErrorMessage('Please, fill all fields!'))
       }
     }
 
@@ -104,14 +104,14 @@ export default {
     const { id } = req.params
     const foundOrder = await col.findOne({ id: id })
     if (foundOrder === null) {
-      return res.status(400)
+      return res.status(404)
         .json(createErrorMessage('Order not found!'))
     }
 
     const keys = Object.keys(req.body)
     for (const key of keys) {
       if (req.body[key] === '') {
-        return res.json(createErrorMessage('Please, fill all fields!'))
+        return res.status(400).json(createErrorMessage('Please, fill all fields!'))
       }
     }
 
@@ -166,7 +166,7 @@ export default {
     const { id } = req.params
     const foundOrder = await col.findOne({ id: id })
     if (foundOrder === null) {
-      return res.status(400)
+      return res.status(404)
         .json(createErrorMessage('Order not found!'))
     }
 

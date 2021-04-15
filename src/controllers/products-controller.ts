@@ -28,7 +28,7 @@ export default {
       const { _id: idMongo, ...product } = await col.findOne({ id: id })
 
       if (product === null) {
-        return res.status(400)
+        return res.status(404)
           .json(createErrorMessage('Product not found!'))
       }
 
@@ -45,12 +45,12 @@ export default {
 
     for (const key of keys) {
       if (req.body[key] === '') {
-        return res.json(createErrorMessage('Please, fill all fields!'))
+        return res.status(400).json(createErrorMessage('Please, fill all fields!'))
       }
     }
 
     if (!isNumber(req.body.price)) {
-      return res.status(401).json(createErrorMessage('Price field is not number!'))
+      return res.status(400).json(createErrorMessage('Please, correctly fill field!'))
     }
 
     const item = {
@@ -76,19 +76,19 @@ export default {
     const { id } = req.params
     const foundProduct = await col.findOne({ id: id })
     if (foundProduct === null) {
-      return res.status(400)
+      return res.status(404)
         .json(createErrorMessage('Product not found!'))
     }
 
     const keys = Object.keys(req.body)
     for (const key of keys) {
       if (req.body[key] === '') {
-        return res.json(createErrorMessage('Please, fill all fields!'))
+        return res.status(400).json(createErrorMessage('Please, fill all fields!'))
       }
     }
 
     if (!isNumber(req.body.price)) {
-      return res.status(401).json(createErrorMessage('Price field is not number!'))
+      return res.status(400).json(createErrorMessage('Please, correctly fill field!'))
     }
 
     const item = {
@@ -116,7 +116,7 @@ export default {
     const { id } = req.params
     const foundProduct = await col.findOne({ id: id })
     if (foundProduct === null) {
-      return res.status(400)
+      return res.status(404)
         .json(createErrorMessage('Product not found!'))
     }
 

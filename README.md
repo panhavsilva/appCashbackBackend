@@ -30,17 +30,17 @@ Create a file called .env. Then, just set some environment variables within this
   * Delete
   * List all
   * Show one
-* CASHBACK
-  * Register
-  * Update
-  * Delete
-  * List all
 * ORDER
   * Register
   * Update
   * Delete
   * List all
   * Show one
+* CASHBACK
+  * Register
+  * Update
+  * Delete
+  * List all
 
 ## Deploy
 This repository is ready to run inside Heroku.
@@ -49,18 +49,21 @@ This repository is ready to run inside Heroku.
 ## PRODUCTS
 
 ### List All
-Returns json data about all products.
+  Returns json data about all products.
 
 * **URL**
-/products
 
-* **Method:**
+  /products
+
+* **Method**
+
   `GET`
 
 *  **URL Params**
-None
 
-* **Success Response:**
+  None
+
+* **Success Response**
   * **Code:** 200 <br />
     **Content:**
     ```
@@ -77,17 +80,18 @@ None
       }
     ]
     ```
-* **Error Response:**
-  * **Code:** 400 Bad Request <br />
+* **Error Response**
+  * **Code:** 400 BAD REQUEST <br />
     **Content:** `{ message: "Error in the list of products!", error: true }`
 
 ### Show One
-Returns json data about one product.
+  Returns json data about one product.
 
 * **URL**
-/products/:id/show
 
-* **Method:**
+  /products/:id/show
+
+* **Method**
   `GET`
 
 *  **URL Params**
@@ -95,7 +99,7 @@ Returns json data about one product.
 
    `id=[string]`
 
-* **Success Response:**
+* **Success Response**
   * **Code:** 200 <br />
     **Content:**
     ```
@@ -105,6 +109,42 @@ Returns json data about one product.
       "price": 14.48
     }
     ```
-* **Error Response:**
+* **Error Response**
   * **Code:** 404 NOT FOUND <br />
     **Content:** `{ message: "Product not found!", error: true }`
+
+### Register
+  Creates a product and returns json data about the created product.
+
+* **URL**
+
+  /products
+
+* **Method**
+  `POST`
+
+*  **URL Params**
+
+  None
+
+* **Expected frontend data**
+  Required:
+  ```
+    {
+      "name": "string",
+      "price": number
+    }
+  ```
+* **Success Response**
+  * **Code:** 200 <br />
+    **Content:**
+    ```
+    {
+      "id": "f71ce1c6-079d-43e4-88ab-b6ccde593168",
+      "name": "product name1",
+      "price": 14.48
+    }
+    ```
+* **Error Response**
+  * **Code:** 400 BAD REQUEST  <br />
+    **Content:** `{ message: "Error creating new product!", error: true }`

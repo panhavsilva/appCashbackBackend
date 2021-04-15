@@ -69,7 +69,7 @@ export default {
       console.log('Error: ', error)
 
       return res.status(400)
-        .json(createErrorMessage('Error creating new product'))
+        .json(createErrorMessage('Error creating new product!'))
     }
   },
   async edit (req: Request, res: Response) {

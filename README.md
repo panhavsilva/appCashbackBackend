@@ -2,6 +2,7 @@
 
 [![NPM](https://img.shields.io/npm/v/@fdaciuk/use-timer.svg)](https://www.npmjs.com/package/@fdaciuk/use-timer) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
+> Status do Projeto: Em desenvolvimento :warning:
 ## Usage
 [https://backend-cashback.herokuapp.com/](https://backend-cashback.herokuapp.com/)
 

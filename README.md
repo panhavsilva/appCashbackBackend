@@ -1,7 +1,8 @@
 # API backend - Project Cashback
 > Project Status: Developing :warning:
 
-[![NPM](https://img.shields.io/npm/v/@fdaciuk/use-timer.svg)](https://www.npmjs.com)
+
+[![NPM Version][npm-image]](https://www.npmjs.com/)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![Heroku](https://heroku-badge.herokuapp.com/?app=heroku-badge)](https://www.heroku.com/)
 

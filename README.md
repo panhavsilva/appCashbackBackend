@@ -60,9 +60,9 @@ This repository is ready to run inside Heroku.
 *  **URL Params** <br />
   None
 
-* **Success Response**
+* **Success Response** <br />
   * **Code:** 200 <br />
-    **Content:**
+    **Content:** <br />
     ```
     [
       {
@@ -77,28 +77,26 @@ This repository is ready to run inside Heroku.
       }
     ]
     ```
-* **Error Response**
+* **Error Response** <br />
   * **Code:** 400 BAD REQUEST <br />
     **Content:** `{ message: "Error in the list of products!", error: true }`
 
 ### Show One
   Returns json data about one product.
 
-* **URL**
-
+* **URL** <br />
   /products/:id/show
 
-* **Method**
+* **Method** <br />
   `GET`
 
-*  **URL Params**
-  **Required:**
-
+*  **URL Params** <br />
+  **Required:** <br />
    `id=[string]`
 
-* **Success Response**
+* **Success Response** <br />
   * **Code:** 200 <br />
-    **Content:**
+    **Content:** <br />
     ```
     {
       "id": "f71ce1c6-079d-43e4-88ab-b6ccde593168",
@@ -106,35 +104,33 @@ This repository is ready to run inside Heroku.
       "price": 14.48
     }
     ```
-* **Error Response**
+* **Error Response** <br />
   * **Code:** 404 NOT FOUND <br />
     **Content:** `{ message: "Product not found!", error: true }`
 
 ### Register
   Creates a product and returns json data about the created product.
 
-* **URL**
-
+* **URL** <br />
   /products
 
-* **Method**
+* **Method** <br />
   `POST`
 
-*  **URL Params**
-
+*  **URL Params** <br />
   None
 
-* **Expected frontend data**
-  Required:
+* **Expected frontend data** <br />
+  Required: <br />
   ```
     {
       "name": "string",
       "price": number
     }
   ```
-* **Success Response**
+* **Success Response** <br />
   * **Code:** 200 <br />
-    **Content:**
+    **Content:** <br />
     ```
     {
       "id": "f71ce1c6-079d-43e4-88ab-b6ccde593168",
@@ -142,6 +138,66 @@ This repository is ready to run inside Heroku.
       "price": 14.48
     }
     ```
-* **Error Response**
+* **Error Response** <br />
   * **Code:** 400 BAD REQUEST  <br />
     **Content:** `{ message: "Error creating new product!", error: true }`
+
+### Update
+  Updates product data and returns json data about the updated product.
+
+* **URL** <br />
+  /products/:id
+
+* **Method** <br />
+  `PUT`
+
+*  **URL Params** <br />
+  **Required:** <br />
+   `id=[string]`
+
+* **Expected frontend data** <br />
+  Name and price, just the name or just the price. <br />
+  ```
+    {
+      "name": "string",
+      "price": number
+    }
+  ```
+* **Success Response** <br />
+  * **Code:** 200 <br />
+    **Content:** <br />
+    ```
+    {
+      "id": "f71ce1c6-079d-43e4-88ab-b6ccde593168",
+      "name": "product name1",
+      "price": 14.48
+    }
+    ```
+* **Error Response** <br />
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** `{ message: "Product not found!", error: true }`
+
+### Delete
+  Deletes the product and returns json data about with deleted product id.
+
+* **URL** <br />
+  /products/:id
+
+* **Method** <br />
+  `DELETE`
+
+*  **URL Params** <br />
+  **Required:** <br />
+   `id=[string]`
+
+* **Success Response** <br />
+  * **Code:** 200 <br />
+    **Content:** <br />
+    ```
+    {
+      "id": "f71ce1c6-079d-43e4-88ab-b6ccde593168"
+    }
+    ```
+* **Error Response** <br />
+  * **Code:** 404 NOT FOUND <br />
+    **Content:** `{ message: "Product not found!", error: true }`

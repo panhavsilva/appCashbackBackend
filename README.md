@@ -51,16 +51,13 @@ This repository is ready to run inside Heroku.
 ### List All
   Returns json data about all products.
 
-* **URL**
-
+* **URL** <br />
   /products
 
-* **Method**
-
+* **Method** <br />
   `GET`
 
-*  **URL Params**
-
+*  **URL Params** <br />
   None
 
 * **Success Response**

@@ -23,8 +23,7 @@ Create a file called .env. Then, just set some environment variables within this
 * `MONGO_DB_NAME`
 * `CORS_ORIGINS`
 
-### Features
-
+## Features
 * PRODUCT
   * Register
   * Update
@@ -43,38 +42,39 @@ Create a file called .env. Then, just set some environment variables within this
   * List all
   * Show one
 
-## Route description
-As descrições são opcionais, mas se você quiser adicioná-las, crie um comentário php sobre cada rota
-```
-/**
- * @description Show the home page of the site
- */
-Route::get('/home', 'HomeController@index') -> name('home.index');
-```
-
-### Resources routes
-As descrições nas rotas de tipo de recurso são identificadas por seu método no controlador.
-```
-/**
- * @index Mostra a vista principal
- * @create Mostre a vista para criar uma foto
- * @store Salvar uma foto no banco de dados
- * @edit Mostre a vista para editar uma foto
- * @update Atualizar dados de fotos no banco de dados
- * @destroy Excluir uma foto no banco de dados
- */
-Route::resource('photos', 'PhotoController');
-```
-
-## Params
-Os parâmetros de rota são definidos com, você pode usar param em rotas de tipo de recurso.
-```
-/**
- * @description Baixe a foto com a identificação da foto.
- * @param id ID da foto no banco de dados.
- */
-Route::get('/photo/{id}/download', 'PhotoController@download');
-```
-
 ## Deploy
 This repository is ready to run inside Heroku.
+
+---
+## PRODUCTS
+
+**Products List**
+Returns json data about all products.
+
+* **URL**
+/products
+
+* **Method:**
+  `GET`
+
+*  **URL Params**
+None
+
+* **Success Response:**
+  * **Code:** 200 <br />
+    **Content:**
+    ```
+    [{
+      "id": "f71ce1c6-079d-43e4-88ab-b6ccde593168",
+      "name": "product name1",
+      "price": 14.48
+      },
+      {
+      "id": "9366e349-0c3f-4300-b3b7-76a806b5e2aa",
+      "name": "product name2",
+      "price": 20.21
+    }]
+    ```
+* **Error Response:**
+  * **Code:** 400 NOT FOUND <br />
+    **Content:** `{ message: "Error in the list of products!", error: true }`

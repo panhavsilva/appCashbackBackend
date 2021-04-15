@@ -6,7 +6,6 @@
 [![Heroku](https://img.shields.io/badge/heroku-deployed-blueviolet)](https://www.heroku.com/)
 
 ## Table of contents
-=================
 <!--ts-->
   * [Usage](#usage)
   * [Install](#install)

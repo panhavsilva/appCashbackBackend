@@ -1,17 +1,44 @@
 # API backend - Project Cashback
 > Project Status: Developing :warning:
 
-[![NPM](https://img.shields.io/badge/npm-V6.14.11-yellow)](https://www.npmjs.com)
+[![NPM](https://img.shields.io/badge/npm-v6.14.11-yellow)](https://www.npmjs.com)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![Heroku](https://img.shields.io/badge/heroku-deployed-blueviolet)](https://www.heroku.com/)
 
+## Table of contents
+=================
+<!--ts-->
+  * [Usage](#usage)
+  * [Install](#install)
+  * [Running server](#running-server)
+  * [Environment Variable](#environment-variable)
+  * [Features](#features)
+  * [Deploy](#deploy)
+  * [Products](#products)
+    * [List All](#list-all-products)
+    * [Show one](#show-one-product)
+    * [Create](#create-product)
+    * [Update](#update-product)
+    * [Delete](#delete-product)
+  * [Orders](#orders)
+    * [List All](#list-all-orders)
+    * [Show one](#show-one-order)
+    * [Create](#register-order)
+    * [Update](#update-order)
+    * [Delete](#delete-order)
+  * [Cashback](#cashback)
+    * [List all](#list-all-cashback)
+    * [Create](#register-cashback)
+    * [Update](#update-cashback)
+    * [Delete](#delete-cashback)
+<!--te-->
 
 ## Usage
 [https://backend-cashback.herokuapp.com/](https://backend-cashback.herokuapp.com/)
 
 ## Install
 * Install dependencies `npm install`
-## Running server
+## Running Server
 Use the npm start to running server.
 ```bash
 npm start
@@ -48,7 +75,7 @@ This repository is ready to run inside Heroku.
 ---
 ## PRODUCTS
 
-### List All
+### List All Products
   Returns json data about all products.
 
 * **URL** <br />
@@ -81,7 +108,7 @@ This repository is ready to run inside Heroku.
   * **Code:** 400 BAD REQUEST <br />
     **Content:** `{ message: "Error in the list of products!", error: true }`
 
-### Show One
+### Show One Product
   Returns json data about one product.
 
 * **URL** <br />
@@ -106,13 +133,13 @@ This repository is ready to run inside Heroku.
     ```
 * **Error Response** <br />
   * **Code:** 404 NOT FOUND <br />
-    **Content:** `{ message: "Product not found!", error: true }`
-  OR
+    **Content:** `{ message: "Product not found!", error: true }` <br />
+  OR <br />
 
   * **Code:** 400 BAD REQUEST <br />
     **Content:** `{ message: "Error show product!", error: true }`
 
-### Register
+### Create Product
   Creates a product and returns json data about the created product.
 
 * **URL** <br />
@@ -149,7 +176,7 @@ This repository is ready to run inside Heroku.
 
   * **Code:** 400 BAD REQUEST <br />
     **Content:** `{ message: "Please, correctly fill fields!", error: true }`
-### Update
+### Update Product
   Updates product data and returns json data about the updated product.
 
 * **URL** <br />
@@ -189,7 +216,8 @@ This repository is ready to run inside Heroku.
     **Content:** `{ message: "Please, correctly fill fields!", error: true }` <br />
     OR <br />
     **Content:** `{ message: "Error edit product!", error: true }`
-### Delete
+
+### Delete Product
   Deletes the product and returns json data about with deleted product id.
 
 * **URL** <br />
@@ -212,7 +240,7 @@ This repository is ready to run inside Heroku.
     ```
 * **Error Response** <br />
   * **Code:** 404 NOT FOUND <br />
-    **Content:** `{ message: "Product not found!", error: true }`
+    **Content:** `{ message: "Product not found!", error: true }` <br />
   OR <br />
 
   * **Code:** 400 BAD REQUEST <br />
@@ -221,7 +249,7 @@ This repository is ready to run inside Heroku.
 ---
 ## ORDERS
 
-### List All
+### List All Orders
   Returns json data about all orders.
 
 * **URL** <br />
@@ -274,7 +302,7 @@ This repository is ready to run inside Heroku.
   * **Code:** 400 BAD REQUEST <br />
     **Content:** `{ message: "Error in the list of orders!", error: true }`
 
-### Show One
+### Show One Order
   Returns json data about one order.
 
 * **URL** <br />
@@ -313,13 +341,13 @@ This repository is ready to run inside Heroku.
     ```
 * **Error Response** <br />
   * **Code:** 404 NOT FOUND <br />
-    **Content:** `{ message: "Order not found!", error: true }`
+    **Content:** `{ message: "Order not found!", error: true }` <br />
   OR <br />
 
   * **Code:** 400 BAD REQUEST <br />
     **Content:** `{ message: "Error show order!", error: true }` <br />
 
-### Register
+### Create Order
   Creates a order and returns json data about the created order.
 
 * **URL** <br />
@@ -372,13 +400,13 @@ This repository is ready to run inside Heroku.
     ```
 * **Error Response** <br />
   * **Code:** 400 BAD REQUEST  <br />
-    **Content:** `{ message: "Error creating new order!", error: true }`
+    **Content:** `{ message: "Error creating new order!", error: true }` <br />
   OR <br />
 
   * **Code:** 400 BAD REQUEST <br />
     **Content:** `{ message: "Please, fill all fields!", error: true }` <br />
 
-### Update
+### Update Order
   Updates order data and returns json data about the updated order.
 
 * **URL** <br />
@@ -431,7 +459,7 @@ This repository is ready to run inside Heroku.
     ```
 * **Error Response** <br />
   * **Code:** 404 NOT FOUND <br />
-    **Content:** `{ message: "Order not found!", error: true }`
+    **Content:** `{ message: "Order not found!", error: true }` <br />
   OR <br />
 
   * **Code:** 400 BAD REQUEST <br />
@@ -439,7 +467,7 @@ This repository is ready to run inside Heroku.
     OR <br />
     **Content:** `{ message: "Error edit order!", error: true }` <br />
 
-### Delete
+### Delete Order
   Deletes the order and returns json data about with deleted order id.
 
 * **URL** <br />
@@ -462,7 +490,7 @@ This repository is ready to run inside Heroku.
     ```
 * **Error Response** <br />
   * **Code:** 404 NOT FOUND <br />
-    **Content:** `{ message: "Error delete order!", error: true }`
+    **Content:** `{ message: "Error delete order!", error: true }` <br />
   OR <br />
 
   * **Code:** 400 BAD REQUEST <br />
@@ -471,7 +499,7 @@ This repository is ready to run inside Heroku.
 ---
 ## CASHBACK
 
-### List All
+### List All Cashback
   Returns json data about all cashback.
 
 * **URL** <br />
@@ -506,7 +534,7 @@ This repository is ready to run inside Heroku.
   * **Code:** 400 BAD REQUEST <br />
     **Content:** `{ message: "Error in the list of cashback ranges!", error: true }`
 
-### Register
+### Create Cashback
   Creates a cashback ranges and returns json data about the created cashback ranges.
 
 * **URL** <br />
@@ -540,13 +568,13 @@ This repository is ready to run inside Heroku.
     ```
 * **Error Response** <br />
   * **Code:** 400 BAD REQUEST  <br />
-    **Content:** `{ message: "Error creating new cashback range!", error: true }`
+    **Content:** `{ message: "Error creating new cashback range!", error: true }` <br />
   OR <br />
 
   * **Code:** 400 BAD REQUEST <br />
     **Content:** `{ message: "Please, fill all fields!", error: true }` <br />
 
-### Update
+### Update Cashback
   Updates cashback ranges data and returns json data about the updated cashback ranges.
 
 * **URL** <br />
@@ -581,7 +609,7 @@ This repository is ready to run inside Heroku.
     ```
 * **Error Response** <br />
   * **Code:** 404 NOT FOUND <br />
-    **Content:** `{ message: "Cashback range not found!", error: true }`
+    **Content:** `{ message: "Cashback range not found!", error: true }` <br />
     OR <br />
 
   * **Code:** 400 BAD REQUEST <br />
@@ -589,7 +617,7 @@ This repository is ready to run inside Heroku.
     OR <br />
     **Content:** `{ message: "Error edit cashback range!", error: true }` <br />
 
-### Delete
+### Delete Cashback
   Deletes the cashback ranges and returns json data about with deleted cashback ranges id.
 
 * **URL** <br />
@@ -612,7 +640,7 @@ This repository is ready to run inside Heroku.
     ```
 * **Error Response** <br />
   * **Code:** 404 NOT FOUND <br />
-    **Content:** `{ message: "Cashback range not found!", error: true }`
+    **Content:** `{ message: "Cashback range not found!", error: true }` <br />
     OR <br />
 
   * **Code:** 400 BAD REQUEST <br />

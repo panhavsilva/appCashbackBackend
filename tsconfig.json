@@ -6,9 +6,6 @@
     "module": "commonjs",
     "sourceMap": true,
     "outDir": "./dist",
-    "lib": [
-      "ESNext"
-    ],
     /* Strict Type-Checking Options */
     "strict": true,
     "noImplicitAny": true,

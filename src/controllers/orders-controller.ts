@@ -13,28 +13,26 @@ type OrderBody = {
 }
 
 export default {
-  async list(_req: Request, res: Response) {
+  async list (_req: Request, res: Response) {
     try {
       const ordersDB = await col.find({}).toArray()
       const orders = ordersDB.map((order) => {
-        const { ['_id']: idMongo, ...orderNoIdMongo } = order
+        const { _id: idMongo, ...orderNoIdMongo } = order
         return orderNoIdMongo
       })
 
       return res.json(orders)
-
     } catch (error) {
       console.log('Error: ', error)
 
       return res.status(400)
         .json(createErrorMessage('Error in the list of orders!'))
     }
-
   },
-  async show(req: Request, res: Response) {
+  async show (req: Request, res: Response) {
     const { id } = req.params
     try {
-      const { ['_id']: idMongo, ...order } = await col.findOne({ id: id })
+      const { _id: idMongo, ...order } = await col.findOne({ id: id })
 
       if (order === null) {
         return res.status(400)
@@ -42,16 +40,14 @@ export default {
       }
 
       return res.json(order)
-
     } catch (error) {
       console.log('Error: ', error)
 
       return res.status(400)
         .json(createErrorMessage('Error show order!'))
     }
-
   },
-  async create(req: Request, res: Response) {
+  async create (req: Request, res: Response) {
     const keys = Object.keys(req.body)
     for (const key of keys) {
       if (req.body[key] === '') {
@@ -64,7 +60,7 @@ export default {
     const productsDatabase = await products.find({ id: { $in: productsID } })
       .toArray()
     const productsOrder = productsDatabase.map((product) => {
-      const { ['_id']: idMongo, ...productNoIdMongo } = product
+      const { _id: idMongo, ...productNoIdMongo } = product
       return productNoIdMongo
     })
 
@@ -94,19 +90,17 @@ export default {
     try {
       const newOrderDB = await db.collection('orders')
         .insertOne(item)
-      const { ['_id']: idMongo, ...newOrder } = newOrderDB.ops[0]
+      const { _id: idMongo, ...newOrder } = newOrderDB.ops[0]
 
       return res.json(newOrder)
-
     } catch (error) {
       console.log('Error: ', error)
 
       return res.status(400)
         .json(createErrorMessage('Error creating new order!'))
     }
-
   },
-  async edit(req: Request, res: Response) {
+  async edit (req: Request, res: Response) {
     const { id } = req.params
     const foundOrder = await col.findOne({ id: id })
     if (foundOrder === null) {
@@ -126,7 +120,7 @@ export default {
     const productsDatabase = await products.find({ id: { $in: productsID } })
       .toArray()
     const productsOrder = productsDatabase.map((product) => {
-      const { ['_id']: idMongo, ...productNoIdMongo } = product
+      const { _id: idMongo, ...productNoIdMongo } = product
       return productNoIdMongo
     })
 
@@ -158,19 +152,17 @@ export default {
         { $set: item }
       )
 
-      const { ['_id']: idMongo, ...editedOrder } = await col.findOne({ id: id })
+      const { _id: idMongo, ...editedOrder } = await col.findOne({ id: id })
 
       return res.json(editedOrder)
-
     } catch (error) {
       console.log('Error: ', error)
 
       return res.status(400)
         .json(createErrorMessage('Error edit order!'))
     }
-
   },
-  async delete(req: Request, res: Response) {
+  async delete (req: Request, res: Response) {
     const { id } = req.params
     const foundOrder = await col.findOne({ id: id })
     if (foundOrder === null) {
@@ -181,14 +173,11 @@ export default {
     try {
       await col.deleteOne({ id: id })
       return res.json({ id: id })
-
     } catch (error) {
       console.log('Error: ', error)
 
       return res.status(400)
         .json(createErrorMessage('Error delete order!'))
     }
-
   }
 }
-

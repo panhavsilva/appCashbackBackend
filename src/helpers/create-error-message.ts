@@ -3,7 +3,7 @@ type CreateErrorMessage = {
   error: boolean
 }
 
-function createErrorMessage(message: string): CreateErrorMessage {
+function createErrorMessage (message: string): CreateErrorMessage {
   return { message: message, error: true }
 }
 

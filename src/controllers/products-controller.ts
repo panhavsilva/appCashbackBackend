@@ -6,29 +6,26 @@ import mongo from '@/services/db'
 const { db } = mongo
 const col = db.collection('products')
 
-
 export default {
-  async list(_req: Request, res: Response) {
+  async list (_req: Request, res: Response) {
     try {
       const productsDB = await col.find({}).toArray()
       const products = productsDB.map((product) => {
-        const { ['_id']: idMongo, ...productNoIdMongo } = product
+        const { _id: idMongo, ...productNoIdMongo } = product
         return productNoIdMongo
       })
       return res.json(products)
-
     } catch (error) {
       console.log('Error: ', error)
 
       return res.status(400)
         .json(createErrorMessage('Error in the list of products!'))
     }
-
   },
-  async show(req: Request, res: Response) {
+  async show (req: Request, res: Response) {
     const { id } = req.params
     try {
-      const { ['_id']: idMongo, ...product } = await col.findOne({ id: id })
+      const { _id: idMongo, ...product } = await col.findOne({ id: id })
 
       if (product === null) {
         return res.status(400)
@@ -36,16 +33,14 @@ export default {
       }
 
       return res.json(product)
-
     } catch (error) {
       console.log('Error: ', error)
 
       return res.status(400)
         .json(createErrorMessage('Error show product'))
     }
-
   },
-  async create(req: Request, res: Response) {
+  async create (req: Request, res: Response) {
     const keys = Object.keys(req.body)
 
     for (const key of keys) {
@@ -67,19 +62,17 @@ export default {
     try {
       const newProduct = await db.collection('products')
         .insertOne(item)
-      const { ['_id']: idMongo, ...product } = newProduct.ops[0]
+      const { _id: idMongo, ...product } = newProduct.ops[0]
 
       return res.json(product)
-
     } catch (error) {
       console.log('Error: ', error)
 
       return res.status(400)
         .json(createErrorMessage('Error creating new product'))
     }
-
   },
-  async edit(req: Request, res: Response) {
+  async edit (req: Request, res: Response) {
     const { id } = req.params
     const foundProduct = await col.findOne({ id: id })
     if (foundProduct === null) {
@@ -98,7 +91,6 @@ export default {
       return res.status(401).json(createErrorMessage('Price field is not number!'))
     }
 
-
     const item = {
       name: req.body.name || foundProduct.name,
       price: req.body.price || foundProduct.price
@@ -110,19 +102,17 @@ export default {
         { $set: item }
       )
 
-      const { ['_id']: idMongo, ...editedProduct } = await col.findOne({ id: id })
+      const { _id: idMongo, ...editedProduct } = await col.findOne({ id: id })
 
       return res.json(editedProduct)
-
     } catch (error) {
       console.log('Error: ', error)
 
       return res.status(400)
         .json(createErrorMessage('Error edit product'))
     }
-
   },
-  async delete(req: Request, res: Response) {
+  async delete (req: Request, res: Response) {
     const { id } = req.params
     const foundProduct = await col.findOne({ id: id })
     if (foundProduct === null) {
@@ -133,13 +123,11 @@ export default {
     try {
       await col.deleteOne({ id: id })
       return res.json({ id: id })
-
     } catch (error) {
       console.log('Error: ', error)
 
       return res.status(400)
         .json(createErrorMessage('Error delete product'))
     }
-
   }
 }

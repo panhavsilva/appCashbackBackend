@@ -1,4 +1,5 @@
 declare global {
+  /* eslint-disable no-unused-vars */
   namespace NodeJS {
     interface ProcessEnv {
       MONGO_URL: string

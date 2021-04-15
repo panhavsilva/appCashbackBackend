@@ -7,24 +7,22 @@ const { db } = mongo
 const col = db.collection('cashbackRanges')
 
 export default {
-  async list(_req: Request, res: Response) {
+  async list (_req: Request, res: Response) {
     try {
       const cashbackRangesDB = await col.find({}).toArray()
       const cashbackRanges = cashbackRangesDB.map((cashback) => {
-        const { ['_id']: idMongo, ...cashbackNoIdMongo } = cashback
+        const { _id: idMongo, ...cashbackNoIdMongo } = cashback
         return cashbackNoIdMongo
       })
       return res.json(cashbackRanges)
-
     } catch (error) {
       console.log('Error: ', error)
 
       return res.status(400)
         .json(createErrorMessage('Error in the list of cashback ranges!'))
     }
-
   },
-  async create(req: Request, res: Response) {
+  async create (req: Request, res: Response) {
     const keys = Object.keys(req.body)
     for (const key of keys) {
       if (req.body[key] === '') {
@@ -36,7 +34,6 @@ export default {
       return res.status(401).json(createErrorMessage('Please, correctly fill in the initial value field!'))
     }
 
-
     const item = {
       id: uuid.v4(),
       name: req.body.name,
@@ -47,19 +44,17 @@ export default {
     try {
       const newCashback = await db.collection('cashbackRanges')
         .insertOne(item)
-      const { ['_id']: idMongo, ...cashback } = newCashback.ops[0]
+      const { _id: idMongo, ...cashback } = newCashback.ops[0]
 
       return res.json(cashback)
-
     } catch (error) {
       console.log('Error: ', error)
 
       return res.status(400)
         .json(createErrorMessage('Error creating new cashback range!'))
     }
-
   },
-  async edit(req: Request, res: Response) {
+  async edit (req: Request, res: Response) {
     const { id } = req.params
     const foundCashbackRange = await col.findOne({ id: id })
     if (foundCashbackRange === null) {
@@ -84,26 +79,23 @@ export default {
       final: req.body.final || foundCashbackRange.final
     }
 
-
     try {
       await col.findOneAndUpdate(
         { id: id },
         { $set: item }
       )
 
-      const { ['_id']: idMongo, ...editedCashbackRange } = await col.findOne({ id: id })
+      const { _id: idMongo, ...editedCashbackRange } = await col.findOne({ id: id })
 
       return res.json(editedCashbackRange)
-
     } catch (error) {
       console.log('Error: ', error)
 
       return res.status(400)
         .json(createErrorMessage('Error edit cashback range!'))
     }
-
   },
-  async delete(req: Request, res: Response) {
+  async delete (req: Request, res: Response) {
     const { id } = req.params
     const foundCashbackRange = await col.findOne({ id: id })
     if (foundCashbackRange === null) {
@@ -114,13 +106,11 @@ export default {
     try {
       await col.deleteOne({ id: id })
       return res.json({ id: id })
-
     } catch (error) {
       console.log('Error: ', error)
 
       return res.status(400)
         .json(createErrorMessage('Error delete cashback range!'))
     }
-
   }
 }

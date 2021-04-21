@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Project Cashback",
   "scripts": {
-    "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/src/app.js",
-    "dev": "nodemon --exec 'sucrase-node' src/app.ts",
+    "start": "node dist/src/app.js",
+    "dev": "nodemon --exec sucrase-node src/app.ts",
     "build": "tsc",
     "lint": "eslint . --ext js,ts",
     "lint:fix": "eslint --fix . --ext js,ts",

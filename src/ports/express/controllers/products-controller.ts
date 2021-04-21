@@ -1,8 +1,8 @@
 import uuid from 'uuid'
 import { Request, Response } from 'express'
-import { createErrorMessage, isNumber } from '@/helpers'
+import { createErrorMessage, isNumber } from '@/ports/express/helpers'
 
-import mongo from '@/services/db'
+import mongo from '@/ports/mongo/db'
 const { db } = mongo
 const col = db.collection('products')
 
@@ -11,7 +11,7 @@ export default {
     try {
       const productsDB = await col.find({}).toArray()
       const products = productsDB.map((product) => {
-        const { _id: idMongo, ...productNoIdMongo } = product
+        const { _id, ...productNoIdMongo } = product
         return productNoIdMongo
       })
       return res.json(products)
@@ -25,7 +25,7 @@ export default {
   async show (req: Request, res: Response) {
     const { id } = req.params
     try {
-      const { _id: idMongo, ...product } = await col.findOne({ id: id })
+      const { _id, ...product } = await col.findOne({ id: id })
 
       if (product === null) {
         return res.status(404)
@@ -56,13 +56,13 @@ export default {
     const item = {
       id: uuid.v4(),
       name: req.body.name,
-      price: req.body.price
+      price: req.body.price,
     }
 
     try {
       const newProduct = await db.collection('products')
         .insertOne(item)
-      const { _id: idMongo, ...product } = newProduct.ops[0]
+      const { _id, ...product } = newProduct.ops[0]
 
       return res.json(product)
     } catch (error) {
@@ -93,7 +93,7 @@ export default {
 
     const item = {
       name: req.body.name || foundProduct.name,
-      price: req.body.price || foundProduct.price
+      price: req.body.price || foundProduct.price,
     }
 
     try {
@@ -102,7 +102,7 @@ export default {
         { $set: item }
       )
 
-      const { _id: idMongo, ...editedProduct } = await col.findOne({ id: id })
+      const { _id, ...editedProduct } = await col.findOne({ id: id })
 
       return res.json(editedProduct)
     } catch (error) {
@@ -129,5 +129,5 @@ export default {
       return res.status(400)
         .json(createErrorMessage('Error delete product!'))
     }
-  }
+  },
 }

@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import routes from '@/routes'
+import routes from '@/ports/express/routes'
 
 const server = express()
 
@@ -8,7 +8,7 @@ const corsOptions = {
   origin: process.env.CORS_ORIGINS,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   preflightContinue: false,
-  optionsSucessStatus: 204
+  optionsSucessStatus: 204,
 }
 
 server.use(express.json())

@@ -1,7 +1,7 @@
 import { Router } from 'express'
-import products from '@/controllers/products-controller'
-import cashback from '@/controllers/cashback-controller'
-import orders from '@/controllers/orders-controller'
+import products from '@/ports/express/controllers/products-controller'
+import cashback from '@/ports/express/controllers/cashback-controller'
+import orders from '@/ports/express/controllers/orders-controller'
 const routes = Router()
 
 routes.get('/products', products.list)

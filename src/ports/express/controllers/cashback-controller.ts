@@ -1,8 +1,8 @@
 import uuid from 'uuid'
 import { Request, Response } from 'express'
-import { createErrorMessage, isNumber } from '@/helpers'
+import { createErrorMessage, isNumber } from '@/ports/express/helpers'
 
-import mongo from '@/services/db'
+import mongo from '@/ports/mongo/db'
 const { db } = mongo
 const col = db.collection('cashbackRanges')
 
@@ -11,7 +11,7 @@ export default {
     try {
       const cashbackRangesDB = await col.find({}).toArray()
       const cashbackRanges = cashbackRangesDB.map((cashback) => {
-        const { _id: idMongo, ...cashbackNoIdMongo } = cashback
+        const { _id, ...cashbackNoIdMongo } = cashback
         return cashbackNoIdMongo
       })
       return res.json(cashbackRanges)
@@ -38,13 +38,13 @@ export default {
       id: uuid.v4(),
       name: req.body.name,
       initial: req.body.initial,
-      final: req.body.final
+      final: req.body.final,
     }
 
     try {
       const newCashback = await db.collection('cashbackRanges')
         .insertOne(item)
-      const { _id: idMongo, ...cashback } = newCashback.ops[0]
+      const { _id, ...cashback } = newCashback.ops[0]
 
       return res.json(cashback)
     } catch (error) {
@@ -76,7 +76,7 @@ export default {
     const item = {
       name: req.body.name || foundCashbackRange.name,
       initial: req.body.initial || foundCashbackRange.initial,
-      final: req.body.final || foundCashbackRange.final
+      final: req.body.final || foundCashbackRange.final,
     }
 
     try {
@@ -85,7 +85,7 @@ export default {
         { $set: item }
       )
 
-      const { _id: idMongo, ...editedCashbackRange } = await col.findOne({ id: id })
+      const { _id, ...editedCashbackRange } = await col.findOne({ id: id })
 
       return res.json(editedCashbackRange)
     } catch (error) {
@@ -112,5 +112,5 @@ export default {
       return res.status(400)
         .json(createErrorMessage('Error delete cashback range!'))
     }
-  }
+  },
 }

@@ -13,7 +13,7 @@ const mongo = {
     await client.connect()
     mongo.db = client.db(dbName)
     console.log('Connected successfully to Mongo DB!')
-  }
+  },
 }
 
 export default mongo

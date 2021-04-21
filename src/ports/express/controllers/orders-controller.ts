@@ -1,8 +1,8 @@
 import uuid from 'uuid'
 import { Request, Response } from 'express'
-import { createErrorMessage } from '@/helpers'
+import { createErrorMessage } from '@/ports/express/helpers'
 
-import mongo from '@/services/db'
+import mongo from '@/ports/mongo/db'
 const { db } = mongo
 const col = db.collection('orders')
 const products = db.collection('products')
@@ -17,7 +17,7 @@ export default {
     try {
       const ordersDB = await col.find({}).toArray()
       const orders = ordersDB.map((order) => {
-        const { _id: idMongo, ...orderNoIdMongo } = order
+        const { _id, ...orderNoIdMongo } = order
         return orderNoIdMongo
       })
 
@@ -32,7 +32,7 @@ export default {
   async show (req: Request, res: Response) {
     const { id } = req.params
     try {
-      const { _id: idMongo, ...order } = await col.findOne({ id: id })
+      const { _id, ...order } = await col.findOne({ id: id })
 
       if (order === null) {
         return res.status(404)
@@ -60,7 +60,7 @@ export default {
     const productsDatabase = await products.find({ id: { $in: productsID } })
       .toArray()
     const productsOrder = productsDatabase.map((product) => {
-      const { _id: idMongo, ...productNoIdMongo } = product
+      const { _id, ...productNoIdMongo } = product
       return productNoIdMongo
     })
 
@@ -84,13 +84,13 @@ export default {
       id: uuid.v4(),
       total: orderTotalValue,
       quantity: totalOrderProduct,
-      products: productsOrder
+      products: productsOrder,
     }
 
     try {
       const newOrderDB = await db.collection('orders')
         .insertOne(item)
-      const { _id: idMongo, ...newOrder } = newOrderDB.ops[0]
+      const { _id, ...newOrder } = newOrderDB.ops[0]
 
       return res.json(newOrder)
     } catch (error) {
@@ -120,7 +120,7 @@ export default {
     const productsDatabase = await products.find({ id: { $in: productsID } })
       .toArray()
     const productsOrder = productsDatabase.map((product) => {
-      const { _id: idMongo, ...productNoIdMongo } = product
+      const { _id, ...productNoIdMongo } = product
       return productNoIdMongo
     })
 
@@ -143,7 +143,7 @@ export default {
     const item = {
       total: orderTotalValue,
       quantity: totalOrderProduct,
-      products: productsOrder
+      products: productsOrder,
     }
 
     try {
@@ -152,7 +152,7 @@ export default {
         { $set: item }
       )
 
-      const { _id: idMongo, ...editedOrder } = await col.findOne({ id: id })
+      const { _id, ...editedOrder } = await col.findOne({ id: id })
 
       return res.json(editedOrder)
     } catch (error) {
@@ -179,5 +179,5 @@ export default {
       return res.status(400)
         .json(createErrorMessage('Error delete order!'))
     }
-  }
+  },
 }

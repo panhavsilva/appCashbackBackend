@@ -10,14 +10,28 @@ const order: Order = {
   ],
 }
 const order2: Order = {
-  order_value: 100,
+  order_value: 0,
   product_list: [],
+}
+const order3: Order = {
+  order_value: 100,
+  product_list: [{ name: 'product1', price: 0, quantity: 0 },
+    { name: 'product2', price: 200, quantity: 1 },
+  ],
+}
+
+const quantityIsZero = (order: Order): Boolean => {
+  const productList = order.product_list
+  return productList.every((item) => item.quantity > 0)
 }
 const hasProduct = (order: Order): Boolean => {
   return order.product_list.length !== 0
 }
 const orderValid = (order: Order): Boolean => {
-  const orderItems = [hasProduct(order)]
+  const orderItems = [
+    hasProduct(order),
+    quantityIsZero(order),
+  ]
   return orderItems.every((item) => item === true)
 }
 const saveOrder: SaveOrder = async (order) => {
@@ -32,12 +46,17 @@ it('Should create order', async () => {
   expect(newOrder).toEqual(right(order))
 })
 
-it('product_list = [] should thow error', async () => {
+it('product_list = [] should throw error', async () => {
   const newOrder = await createOrder(order2)(saveOrder)
   expect(newOrder).toEqual(left(new Error('Invalid Order!')))
 })
 
-it('should createOrder thow error', async () => {
+it('quantity = 0 should throw error', async () => {
+  const newOrder = await createOrder(order3)(saveOrder)
+  expect(newOrder).toEqual(left(new Error('Invalid Order!')))
+})
+
+it('should createOrder throw error', async () => {
   const newOrder = await createOrder(order)(saveOrderError)
   expect(newOrder).toEqual(left(new Error('Invalid Order!')))
 })

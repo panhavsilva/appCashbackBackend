@@ -9,7 +9,16 @@ const order: Order = {
     { name: 'product2', price: 200, quantity: 1 },
   ],
 }
-const saveOrder: SaveOrder = async (order) => { return order }
+const order2: Order = {
+  order_value: 100,
+  product_list: [],
+}
+const hasProduct = (order: Order): Boolean => {
+  return order.product_list.length !== 0
+}
+const saveOrder: SaveOrder = async (order) => {
+  return hasProduct(order) ? order : saveOrderError()
+}
 const saveOrderError = async (): Promise<never> => {
   throw new Error('Invalid Order!')
 }
@@ -17,6 +26,11 @@ const saveOrderError = async (): Promise<never> => {
 it('Should create order', async () => {
   const newOrder = await createOrder(order)(saveOrder)
   expect(newOrder).toEqual(right(order))
+})
+
+it('product_list = [] should thow error', async () => {
+  const newOrder = await createOrder(order2)(saveOrder)
+  expect(newOrder).toEqual(left(new Error('Invalid Order!')))
 })
 
 it('should createOrder thow error', async () => {

@@ -16,8 +16,12 @@ const order2: Order = {
 const hasProduct = (order: Order): Boolean => {
   return order.product_list.length !== 0
 }
+const orderValid = (order: Order): Boolean => {
+  const orderItems = [hasProduct(order)]
+  return orderItems.every((item) => item === true)
+}
 const saveOrder: SaveOrder = async (order) => {
-  return hasProduct(order) ? order : saveOrderError()
+  return orderValid(order) ? order : saveOrderError()
 }
 const saveOrderError = async (): Promise<never> => {
   throw new Error('Invalid Order!')

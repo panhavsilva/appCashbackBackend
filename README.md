@@ -37,6 +37,7 @@
 
 ## Install
 * Install dependencies `npm install`
+
 ## Running Server
 Use the npm start to running server.
 ```bash
@@ -89,7 +90,7 @@ This repository is ready to run inside Heroku.
 * **Success Response** <br />
   * **Code:** 200 <br />
     **Content:** <br />
-    ```
+    ```json
     [
       {
         "id": "f71ce1c6-079d-43e4-88ab-b6ccde593168",
@@ -123,7 +124,7 @@ This repository is ready to run inside Heroku.
 * **Success Response** <br />
   * **Code:** 200 <br />
     **Content:** <br />
-    ```
+    ```json
     {
       "id": "f71ce1c6-079d-43e4-88ab-b6ccde593168",
       "name": "product name1",
@@ -152,16 +153,16 @@ This repository is ready to run inside Heroku.
 
 * **Expected frontend data** <br />
   Required: name and price of the product to be created. <br />
-  ```
+  ```json
     {
       "name": "string",
-      "price": number
+      "price": "number"
     }
   ```
 * **Success Response** <br />
   * **Code:** 200 <br />
     **Content:** <br />
-      ```
+      ```json
       {
         "id": "f71ce1c6-079d-43e4-88ab-b6ccde593168",
         "name": "product name1",
@@ -190,16 +191,16 @@ This repository is ready to run inside Heroku.
 
 * **Expected frontend data** <br />
   Name and price, just the name or just the price. <br />
-  ```
+  ```json
     {
       "name": "string",
-      "price": number
+      "price": "number"
     }
   ```
 * **Success Response** <br />
   * **Code:** 200 <br />
     **Content:** <br />
-    ```
+    ```json
     {
       "id": "f71ce1c6-079d-43e4-88ab-b6ccde593168",
       "name": "product name1",
@@ -232,7 +233,7 @@ This repository is ready to run inside Heroku.
 * **Success Response** <br />
   * **Code:** 200 <br />
     **Content:** <br />
-    ```
+    ```json
     {
       "id": "f71ce1c6-079d-43e4-88ab-b6ccde593168"
     }
@@ -263,7 +264,7 @@ This repository is ready to run inside Heroku.
 * **Success Response** <br />
   * **Code:** 200 <br />
     **Content:** <br />
-    ```
+    ```json
     [
       {
         "id": "050db035-371c-4328-a6c6-77028291cfca",
@@ -317,7 +318,7 @@ This repository is ready to run inside Heroku.
 * **Success Response** <br />
   * **Code:** 200 <br />
     **Content:** <br />
-    ```
+    ```json
     {
       "id": "050db035-371c-4328-a6c6-77028291cfca",
       "total": 288278.08,
@@ -360,15 +361,15 @@ This repository is ready to run inside Heroku.
 
 * **Expected frontend data** <br />
   Required: Array of objects containing id and quantity of the products of order. <br />
-  ```
+  ```json
     [
       {
         "id":"string",
-        "quantity": number
+        "quantity": "number"
       },
       {
         "id":"string",
-        "quantity": number
+        "quantity": "number"
       }
     ]
   ```
@@ -376,7 +377,7 @@ This repository is ready to run inside Heroku.
   * **Code:** 200 <br />
     **Content:** <br />
     Object containing id, price total of order, quantity total of products of order and array of objects with products of order.
-    ```
+    ```json
     {
       "id": "f4049dd9-d4ea-4227-a622-5bb70bcf43b9",
       "total": 166.95,
@@ -420,22 +421,22 @@ This repository is ready to run inside Heroku.
 
 * **Expected frontend data** <br />
   Required: New array of objects containing id and quantity of the products of order. <br />
-  ```
+  ```json
     [
       {
         "id":"string",
-        "quantity":number
+        "quantity":"number"
       },
       {
         "id":"string",
-        "quantity":number
+        "quantity":"number"
       }
     ]
   ```
 * **Success Response** <br />
   * **Code:** 200 <br />
     **Content:** <br />
-    ```
+    ```json
     {
       "id": "f4049dd9-d4ea-4227-a622-5bb70bcf43b9",
       "total": 138.44,
@@ -482,7 +483,7 @@ This repository is ready to run inside Heroku.
 * **Success Response** <br />
   * **Code:** 200 <br />
     **Content:** <br />
-    ```
+    ```json
     {
       "id": "9b8152b8-3999-4690-8e37-d19e16f43798"
     }
@@ -513,7 +514,7 @@ This repository is ready to run inside Heroku.
 * **Success Response** <br />
   * **Code:** 200 <br />
     **Content:** <br />
-    ```
+    ```json
     [
       {
         "id": "e4f35560-4cd8-45ef-b261-236b1d6ae0bf",
@@ -547,17 +548,17 @@ This repository is ready to run inside Heroku.
 
 * **Expected frontend data** <br />
   Required: Name, value initial and value final of the cashback ranges. <br />
-  ```
+  ```json
     {
       "name":"string",
-      "initial": number,
-      "final": number
+      "initial": "number",
+      "final": "number"
     }
   ```
 * **Success Response** <br />
   * **Code:** 200 <br />
     **Content:** <br />
-    ```
+    ```json
     {
       "id": "e4f35560-4cd8-45ef-b261-236b1d6ae0bf",
       "name": "cashback name",
@@ -588,17 +589,17 @@ This repository is ready to run inside Heroku.
 
 * **Expected frontend data** <br />
   Required: Only one of the properties or more. <br />
-  ```
+  ```json
     {
       "name":"string",
-      "initial": number,
-      "final": number
+      "initial": "number",
+      "final": "number"
     }
   ```
 * **Success Response** <br />
   * **Code:** 200 <br />
     **Content:** <br />
-    ```
+    ```json
     {
       "id": "17e5dc83-4acb-403d-af7e-8133f50461a4",
       "name": "cashback name",
@@ -632,7 +633,7 @@ This repository is ready to run inside Heroku.
 * **Success Response** <br />
   * **Code:** 200 <br />
     **Content:** <br />
-    ```
+    ```jsonjson
     {
       "id": "339b1e16-4c00-4894-8b81-7312db98e531"
     }

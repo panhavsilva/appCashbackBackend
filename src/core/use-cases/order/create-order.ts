@@ -4,25 +4,25 @@ import { Order } from '@/core/types/order'
 export type SaveOrder = (o: Order) => Promise<Order>
 type CreateOrder = (o: Order) => (f: SaveOrder) => Promise<Either<string, Order>>
 
-const hasProduct = (order: Order): Boolean => {
+const hasProduct = (order: Order): boolean => {
   return order.product_list.length > 0
 }
-const orderError = async (): Promise<never> => {
-  throw new Error('Invalid Product!')
-}
-const orderProductsValid = (order: Order): Boolean => {
+const isProductsValid = (order: Order): boolean => {
   const orderItems = [hasProduct(order)]
   return orderItems.every((item) => item === true)
 }
 const validOrder = async (order: Order): Promise<Order> => {
-  return orderProductsValid(order) ? order : orderError()
+  if (isProductsValid(order)) {
+    return order
+  }
+  throw new Error('Invalid Product!')
 }
 
 export const createOrder: CreateOrder = (order: Order) => async (saveOrder) => {
   try {
-    await validOrder(order)
-    const newOrder = await saveOrder(order)
-    return right(newOrder)
+    const newOrder = await validOrder(order)
+    const saveNewOrder = await saveOrder(newOrder)
+    return right(saveNewOrder)
   } catch (e) {
     return left(e)
   }

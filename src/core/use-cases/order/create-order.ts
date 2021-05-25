@@ -5,7 +5,7 @@ export type SaveOrder = (o: Order) => Promise<Order>
 type CreateOrder = (o: Order) => (f: SaveOrder) => Promise<Either<string, Order>>
 
 const hasProduct = (order: Order): boolean => {
-  return order.product_list.length > 0
+  return order.productList.length > 0
 }
 const isProductsValid = (order: Order): boolean => {
   const orderItems = [hasProduct(order)]

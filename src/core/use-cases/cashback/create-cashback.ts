@@ -5,7 +5,7 @@ export type SaveCashback = (c: Cashback) => Promise<Cashback>
 type CreateCashback = (c: Cashback) => (f: SaveCashback) => Promise<Either<string, Cashback>>
 
 const isMinSmallMax = (cashback: Cashback): boolean => {
-  return cashback.min_value < cashback.max_value
+  return cashback.minValue < cashback.maxValue
 }
 const isCashbackValid = (cashback: Cashback): boolean => {
   const cashbackItems = [isMinSmallMax(cashback)]

@@ -3,15 +3,15 @@ import { Order } from '@/core/types/order'
 import { createOrder, SaveOrder } from './create-order'
 
 const order: Order = {
-  order_value: 100,
-  product_list: [
+  orderValue: 100,
+  productList: [
     { name: 'product1', price: 100, quantity: 10 },
     { name: 'product2', price: 200, quantity: 1 },
   ],
 }
 const order2: Order = {
-  order_value: 0,
-  product_list: [],
+  orderValue: 0,
+  productList: [],
 }
 
 const saveOrder: SaveOrder = async (order) => {

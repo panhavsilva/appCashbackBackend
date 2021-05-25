@@ -1,5 +1,5 @@
 export type Cashback = {
-  min_value: number
-  max_value: number
+  minValue: number
+  maxValue: number
   percentage: number
 }

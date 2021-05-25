@@ -4,16 +4,16 @@ import { Cashback } from '@/core/types/cashback'
 export type SaveCashback = (c: Cashback) => Promise<Cashback>
 type CreateCashback = (c: Cashback) => (f: SaveCashback) => Promise<Either<string, Cashback>>
 
-const isMinSmallMax = (c: Cashback): boolean => {
-  return c.min_value < c.max_value
+const isMinSmallMax = (cashback: Cashback): boolean => {
+  return cashback.min_value < cashback.max_value
 }
-const isCashbackValid = (c: Cashback): boolean => {
-  const cashbackItems = [isMinSmallMax(c)]
+const isCashbackValid = (cashback: Cashback): boolean => {
+  const cashbackItems = [isMinSmallMax(cashback)]
   return cashbackItems.every((item) => item === true)
 }
-const validCashback = async (c: Cashback): Promise<Cashback> => {
-  if (isCashbackValid(c)) {
-    return c
+const validCashback = async (cashback: Cashback): Promise<Cashback> => {
+  if (isCashbackValid(cashback)) {
+    return cashback
   }
   throw new Error('Invalid Cashback!')
 }

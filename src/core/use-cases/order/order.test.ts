@@ -21,17 +21,17 @@ const saveOrderError = async (): Promise<never> => {
   throw new Error('Invalid Order!')
 }
 
-it('Should create order', async () => {
+it('Deve criar um pedido', async () => {
   const newOrder = await createOrder(order)(saveOrder)
   expect(newOrder).toEqual(right(order))
 })
 
-it('product_list = [] should throw error', async () => {
+it('Deve lançar um erro quando productList for um array vazio', async () => {
   const newOrder = await createOrder(order2)(saveOrder)
   expect(newOrder).toEqual(left(new Error('Invalid Product!')))
 })
 
-it('should createOrder throw error', async () => {
+it('Deve lançar um erro quando utilizado saveOrderError', async () => {
   const newOrder = await createOrder(order)(saveOrderError)
   expect(newOrder).toEqual(left(new Error('Invalid Order!')))
 })

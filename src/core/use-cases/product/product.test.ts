@@ -7,12 +7,12 @@ const saveProductError = async (): Promise<never> => {
   throw new Error('Produto Invalido!')
 }
 
-it('should create a product', async () => {
+it('Deve criar um produto', async () => {
   const newProduct = await createProduct(product)(saveProduct)
   expect(newProduct).toEqual(right(product))
 })
 
-it('should saveProduct throw error', async () => {
+it('Deve lançar um erro quando utilizado saveProductError', async () => {
   const newProduct = await createProduct(product)(saveProductError)
   expect(newProduct).toEqual(left(new Error('Produto Invalido!')))
 })

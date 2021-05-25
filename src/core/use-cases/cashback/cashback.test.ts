@@ -15,12 +15,12 @@ it('Deve criar um cashback', async () => {
   expect(newCashback).toEqual(right(cashback))
 })
 
-it('Deve lançar um erro quando o valor mínimo for maior que o valor máximo', async () => {
+it('Deve lançar um erro quando o minValue for maior que o maxValue', async () => {
   const newCashback = await createCashback(cashback2)(saveCashback)
   expect(newCashback).toEqual(left(new Error('Invalid Cashback!')))
 })
 
-it('Deve lançar um erro quando o valor mínimo for igual ao valor máximo', async () => {
+it('Deve lançar um erro quando o minValue for igual ao maxValue', async () => {
   const newCashback = await createCashback(cashback3)(saveCashback)
   expect(newCashback).toEqual(left(new Error('Invalid Cashback!')))
 })

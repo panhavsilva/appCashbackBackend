@@ -1,4 +1,4 @@
-import { right, left } from 'fp-ts/Either'
+import { right, left, isLeft } from 'fp-ts/Either'
 import { Order } from '@/core/types/order'
 import { createOrder, SaveOrder } from './create-order'
 
@@ -15,7 +15,10 @@ const order2: Order = {
 }
 
 const saveOrder: SaveOrder = async (order) => {
-  return order
+  if (!isLeft(order)) {
+    return order.right
+  }
+  throw order.left
 }
 const saveOrderError = async (): Promise<never> => {
   throw new Error('Invalid Order!')
@@ -28,7 +31,7 @@ it('Deve criar um pedido', async () => {
 
 it('Deve lançar um erro quando productList for um array vazio', async () => {
   const newOrder = await createOrder(order2)(saveOrder)
-  expect(newOrder).toEqual(left(new Error('Invalid Product!')))
+  expect(newOrder).toEqual(left(new Error('Invalid Product! - No products in the product list.')))
 })
 
 it('Deve lançar um erro quando utilizado saveOrderError', async () => {

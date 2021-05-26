@@ -1,7 +1,7 @@
 import { right, Either, left } from 'fp-ts/Either'
 import { Order } from '@/core/types/order'
 
-export type SaveOrder = (o: Order) => Promise<Order>
+export type SaveOrder = (o: Either<Error, Order>) => Promise<Order|never>
 type CreateOrder = (o: Order) => (f: SaveOrder) => Promise<Either<string, Order>>
 
 const hasProduct = (order: Order): boolean => {
@@ -11,11 +11,11 @@ const isProductsValid = (order: Order): boolean => {
   const orderItems = [hasProduct(order)]
   return orderItems.every((item) => item === true)
 }
-const validOrder = async (order: Order): Promise<Order> => {
+const validOrder = async (order: Order): Promise<Either<Error, Order>> => {
   if (isProductsValid(order)) {
-    return order
+    return right(order)
   }
-  throw new Error('Invalid Product!')
+  return left(new Error('Invalid Product! - No products in the product list.'))
 }
 
 export const createOrder: CreateOrder = (order: Order) => async (saveOrder) => {

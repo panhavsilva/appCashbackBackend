@@ -8,8 +8,8 @@ const hasProduct = (order: Order): boolean => {
   return order.productList.length > 0
 }
 const isProductsValid = (order: Order): boolean => {
-  const orderItems = [hasProduct(order)]
-  return orderItems.every((item) => item === true)
+  const orderValidators = [hasProduct(order)]
+  return orderValidators.every((item) => item === true)
 }
 const validOrder = async (order: Order): Promise<Either<Error, Order>> => {
   if (isProductsValid(order)) {

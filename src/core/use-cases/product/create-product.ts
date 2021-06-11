@@ -1,14 +1,16 @@
-import { right, Either, left } from 'fp-ts/Either'
+import * as TE from 'fp-ts/TaskEither'
+import { pipe } from 'fp-ts/function'
+import { toError } from 'fp-ts/Either'
 import { Product } from '@/core/types/product'
 
-export type SaveProduct = (p: Product) => Promise<Product>
-type CreateProduct = (p: Product) => (f: SaveProduct) => Promise<Either<string, Product>>
+export type SaveProduct = (p: Product) => Promise<unknown>
+type CreateProduct = (f: SaveProduct) => (p: Product) => TE.TaskEither<Error, unknown>
 
-export const createProduct: CreateProduct = (product) => async (saveProduct) => {
-  try {
-    const newProduct = await saveProduct(product)
-    return right(newProduct)
-  } catch (e) {
-    return left(e)
-  }
+export const createProduct: CreateProduct = (saveProduct) => (product) => {
+  return pipe(
+    TE.tryCatch(
+      () => saveProduct(product),
+      toError,
+    ),
+  )
 }

@@ -1,18 +1,29 @@
-import { right, left } from 'fp-ts/Either'
+import { pipe } from 'fp-ts/function'
+import * as TE from 'fp-ts/TaskEither'
 import { createProduct, SaveProduct } from './create-product'
 
 const product = { name: 'product', price: 10 }
-const saveProduct: SaveProduct = async (product) => { return product }
-const saveProductError = async (): Promise<never> => {
-  throw new Error('Produto Invalido!')
+const saveProduct: SaveProduct = async (product) => {
+  return `Produto cadastrado com sucesso! ${product.name}`
+}
+const saveProductError: SaveProduct = async () => {
+  throw new Error('Database Error!')
 }
 
 it('Deve criar um produto', async () => {
-  const newProduct = await createProduct(product)(saveProduct)
-  expect(newProduct).toEqual(right(product))
+  return pipe(
+    product,
+    createProduct(saveProduct),
+    TE.map((newProduct) => expect(newProduct)
+      .toBe(`Produto cadastrado com sucesso! ${product.name}`)),
+  )
 })
 
 it('Deve lançar um erro quando utilizado saveProductError', async () => {
-  const newProduct = await createProduct(product)(saveProductError)
-  expect(newProduct).toEqual(left(new Error('Produto Invalido!')))
+  return pipe(
+    product,
+    createProduct(saveProductError),
+    TE.mapLeft((newProduct) => expect(newProduct)
+      .toBe(new Error('Database Error!'))),
+  )
 })

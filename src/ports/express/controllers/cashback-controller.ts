@@ -82,7 +82,7 @@ export default {
     try {
       await col.findOneAndUpdate(
         { id: id },
-        { $set: item }
+        { $set: item },
       )
 
       const { _id, ...editedCashbackRange } = await col.findOne({ id: id })

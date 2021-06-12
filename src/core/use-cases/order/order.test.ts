@@ -1,4 +1,5 @@
-import { right, left, isLeft } from 'fp-ts/Either'
+import * as TE from 'fp-ts/TaskEither'
+import { pipe } from 'fp-ts/function'
 import { Order } from '@/core/types/order'
 import { createOrder, SaveOrder } from './create-order'
 
@@ -9,32 +10,40 @@ const order: Order = {
     { name: 'product2', price: 200, quantity: 1 },
   ],
 }
-const order2: Order = {
+const orderProductListEmpty: Order = {
   orderValue: 0,
   productList: [],
 }
 
 const saveOrder: SaveOrder = async (order) => {
-  if (!isLeft(order)) {
-    return order.right
-  }
-  throw order.left
+  return `Pedido cadastrado com sucesso! ${order.orderValue}`
 }
-const saveOrderError = async (): Promise<never> => {
-  throw new Error('Invalid Order!')
+const saveOrderError: SaveOrder = async () => {
+  throw new Error('Database Error!')
 }
 
 it('Deve criar um pedido', async () => {
-  const newOrder = await createOrder(order)(saveOrder)
-  expect(newOrder).toEqual(right(order))
+  return pipe(
+    order,
+    createOrder(saveOrder),
+    TE.map((newOrder) => expect(newOrder).toBe(`Pedido cadastrado com sucesso! ${order.orderValue}`)),
+  )()
 })
 
 it('Deve lançar um erro quando productList for um array vazio', async () => {
-  const newOrder = await createOrder(order2)(saveOrder)
-  expect(newOrder).toEqual(left(new Error('Invalid Product! - No products in the product list.')))
+  return pipe(
+    orderProductListEmpty,
+    createOrder(saveOrderError),
+    TE.map((newOrder) => expect(newOrder)
+      .toEqual(Error('Invalid Product! - No products in the product list.'))),
+  )()
 })
 
 it('Deve lançar um erro quando utilizado saveOrderError', async () => {
-  const newOrder = await createOrder(order)(saveOrderError)
-  expect(newOrder).toEqual(left(new Error('Invalid Order!')))
+  return pipe(
+    order,
+    createOrder(saveOrderError),
+    TE.mapLeft((newOrder) => expect(newOrder)
+      .toEqual(Error('Database Error!'))),
+  )()
 })

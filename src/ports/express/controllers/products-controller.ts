@@ -99,7 +99,7 @@ export default {
     try {
       await col.findOneAndUpdate(
         { id: id },
-        { $set: item }
+        { $set: item },
       )
 
       const { _id, ...editedProduct } = await col.findOne({ id: id })

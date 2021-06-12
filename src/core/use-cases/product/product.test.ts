@@ -24,6 +24,6 @@ it('Deve lançar um erro quando utilizado saveProductError', async () => {
     product,
     createProduct(saveProductError),
     TE.mapLeft((newProduct) => expect(newProduct)
-      .toBe(new Error('Database Error!'))),
+      .toBe(Error('Database Error!'))),
   )
 })

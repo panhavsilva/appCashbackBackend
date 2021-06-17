@@ -1,5 +1,5 @@
 const { spawn } = require('cross-spawn')
-const pkg = require('../package.json')
+const pkg = require('./package.json')
 
 const dependencies = Object.keys(pkg.dependencies)
 const devDependencies = Object.keys(pkg.devDependencies)

@@ -13,7 +13,7 @@ const isProductsValid = (order: Order): boolean => {
   const orderValidators = [hasProduct(order)]
   return orderValidators.every((item) => item === true)
 }
-const validOrder = (order: Order): Either<Error, Order> => {
+const validateOrder = (order: Order): Either<Error, Order> => {
   if (isProductsValid(order)) {
     return right(order)
   }
@@ -23,7 +23,7 @@ const validOrder = (order: Order): Either<Error, Order> => {
 export const createOrder: CreateOrder = (saveOrder) => (order: Order) => {
   return pipe(
     order,
-    validOrder,
+    validateOrder,
     TE.fromEither,
     TE.chain((order) => TE.tryCatch(
       () => saveOrder(order),

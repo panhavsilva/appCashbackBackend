@@ -4,7 +4,7 @@ import { createCashback, SaveCashback } from './create-cashback'
 import { Cashback } from '@/core/types/cashback'
 
 const ValidCashback: Cashback = { minValue: 0, maxValue: 100, percentage: 5 }
-const cashbackMinValueGraterMaxValue: Cashback = {
+const cashbackMinValueGraterThanMaxValue: Cashback = {
   minValue: 100,
   maxValue: 0,
   percentage: 5,
@@ -32,7 +32,7 @@ it('Deve criar um cashback', async () => {
 
 it('Deve lançar um erro quando o minValue for maior que o maxValue', async () => {
   return pipe(
-    cashbackMinValueGraterMaxValue,
+    cashbackMinValueGraterThanMaxValue,
     createCashback(saveCashbackError),
     TE.mapLeft((newCashback) => expect(newCashback)
       .toEqual(new Error('Invalid Cashback! - min value should be less then max value.'))),

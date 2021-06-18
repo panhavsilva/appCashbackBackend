@@ -13,7 +13,7 @@ const isCashbackValid = (cashback: Cashback): boolean => {
   const cashbackValidators = [isMinSmallMax(cashback)]
   return cashbackValidators.every((item) => item === true)
 }
-const validCashback = (cashback: Cashback): Either<Error, Cashback> => {
+const validateCashback = (cashback: Cashback): Either<Error, Cashback> => {
   if (isCashbackValid(cashback)) {
     return right(cashback)
   }
@@ -24,7 +24,7 @@ const validCashback = (cashback: Cashback): Either<Error, Cashback> => {
 export const createCashback: CreateCashback = (saveCashback) => (cashback) => {
   return pipe(
     cashback,
-    validCashback,
+    validateCashback,
     TE.fromEither,
     TE.chain((cashback) => TE.tryCatch(
       () => saveCashback(cashback),

@@ -39,11 +39,12 @@ it('Deve lançar um erro quando productList for um array vazio', async () => {
   )()
 })
 
-it('Deve lançar um erro quando utilizado saveOrderError', async () => {
-  return pipe(
-    order,
-    createOrder(saveOrderError),
-    TE.mapLeft((newOrder) => expect(newOrder)
-      .toEqual(Error('Database Error!'))),
-  )()
-})
+it('Quando o pedido for válido e um erro for lançado à partir da função saveOrder, o erro deveria propagar'
+  , async () => {
+    return pipe(
+      order,
+      createOrder(saveOrderError),
+      TE.mapLeft((newOrder) => expect(newOrder)
+        .toEqual(Error('Database Error!'))),
+    )()
+  })

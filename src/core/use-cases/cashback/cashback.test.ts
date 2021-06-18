@@ -48,11 +48,12 @@ it('Deve lançar um erro quando o minValue for igual ao maxValue', async () => {
   )()
 })
 
-it('Deve lançar um erro quando utilizado saveCashbackError', async () => {
-  return pipe(
-    ValidCashback,
-    createCashback(saveCashbackError),
-    TE.mapLeft((newCashback) => expect(newCashback)
-      .toEqual(new Error('Database Error!'))),
-  )()
-})
+it('Quando o cashback for válido e um erro for lançado à partir da função saveCashback, o erro deveria propagar'
+  , async () => {
+    return pipe(
+      ValidCashback,
+      createCashback(saveCashbackError),
+      TE.mapLeft((newCashback) => expect(newCashback)
+        .toEqual(new Error('Database Error!'))),
+    )()
+  })

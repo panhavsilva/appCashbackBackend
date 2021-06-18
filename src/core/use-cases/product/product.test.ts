@@ -19,11 +19,12 @@ it('Deve criar um produto', async () => {
   )
 })
 
-it('Deve lançar um erro quando utilizado saveProductError', async () => {
-  return pipe(
-    product,
-    createProduct(saveProductError),
-    TE.mapLeft((newProduct) => expect(newProduct)
-      .toBe(Error('Database Error!'))),
-  )
-})
+it('Quando o produto for válido e um erro for lançado à partir da função saveProduct, o erro deveria propagar'
+  , async () => {
+    return pipe(
+      product,
+      createProduct(saveProductError),
+      TE.mapLeft((newProduct) => expect(newProduct)
+        .toBe(Error('Database Error!'))),
+    )
+  })

@@ -6,11 +6,11 @@ import { Cashback } from '@/core/types/cashback'
 export type SaveCashback = (c: Cashback) => Promise<unknown>
 type CreateCashback = (f: SaveCashback) => (c: Cashback) => TE.TaskEither<Error, unknown>
 
-const isMinSmallMax = (cashback: Cashback): boolean => {
+const isMinValueLessThanMaxValue = (cashback: Cashback): boolean => {
   return cashback.minValue < cashback.maxValue
 }
 const isCashbackValid = (cashback: Cashback): boolean => {
-  const cashbackValidators = [isMinSmallMax(cashback)]
+  const cashbackValidators = [isMinValueLessThanMaxValue(cashback)]
   return cashbackValidators.every((item) => item === true)
 }
 const validateCashback = (cashback: Cashback): Either<Error, Cashback> => {

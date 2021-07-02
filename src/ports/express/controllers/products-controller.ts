@@ -1,6 +1,9 @@
-import uuid from 'uuid'
+import { pipe } from 'fp-ts/function'
+import * as TE from 'fp-ts/TaskEither'
 import { Request, Response } from 'express'
 import { createErrorMessage, isNumber } from '@/ports/express/helpers'
+import { createProduct } from '@/adapters'
+import { saveProduct } from '@/adapters/db/mongo'
 
 import mongo from '@/ports/mongo/db'
 const { db } = mongo
@@ -41,36 +44,12 @@ export default {
     }
   },
   async create (req: Request, res: Response) {
-    const keys = Object.keys(req.body)
-
-    for (const key of keys) {
-      if (req.body[key] === '') {
-        return res.status(400).json(createErrorMessage('Please, correctly fill fields!'))
-      }
-    }
-
-    if (!isNumber(req.body.price)) {
-      return res.status(400).json(createErrorMessage('Please, correctly fill fields!'))
-    }
-
-    const item = {
-      id: uuid.v4(),
-      name: req.body.name,
-      price: req.body.price,
-    }
-
-    try {
-      const newProduct = await db.collection('products')
-        .insertOne(item)
-      const { _id, ...product } = newProduct.ops[0]
-
-      return res.json(product)
-    } catch (error) {
-      console.log('Error: ', error)
-
-      return res.status(400)
-        .json(createErrorMessage('Error creating new product!'))
-    }
+    return pipe(
+      req.body,
+      createProduct(saveProduct),
+      TE.map((data) => res.json(data)),
+      TE.mapLeft((e) => res.status(400).json(e.message)),
+    )()
   },
   async edit (req: Request, res: Response) {
     const { id } = req.params

@@ -1,8 +1,12 @@
-import uuid from 'uuid'
+import { pipe } from 'fp-ts/function'
+import * as TE from 'fp-ts/TaskEither'
 import { Request, Response } from 'express'
-import { createErrorMessage, isNumber } from '@/ports/express/helpers'
 
+import { createErrorMessage, isNumber } from '@/ports/express/helpers'
+import { createCashback } from '@/adapters'
+import { saveCashback } from '@/adapters/db/mongo'
 import mongo from '@/ports/mongo/db'
+
 const { db } = mongo
 const col = db.collection('cashbackRanges')
 
@@ -23,36 +27,12 @@ export default {
     }
   },
   async create (req: Request, res: Response) {
-    const keys = Object.keys(req.body)
-    for (const key of keys) {
-      if (req.body[key] === '') {
-        return res.json(createErrorMessage('Please, fill all fields!'))
-      }
-    }
-
-    if (!isNumber(req.body.initial) || !isNumber(req.body.final)) {
-      return res.status(400).json(createErrorMessage('Please, fill all fields!'))
-    }
-
-    const item = {
-      id: uuid.v4(),
-      name: req.body.name,
-      initial: req.body.initial,
-      final: req.body.final,
-    }
-
-    try {
-      const newCashback = await db.collection('cashbackRanges')
-        .insertOne(item)
-      const { _id, ...cashback } = newCashback.ops[0]
-
-      return res.json(cashback)
-    } catch (error) {
-      console.log('Error: ', error)
-
-      return res.status(400)
-        .json(createErrorMessage('Error creating new cashback range!'))
-    }
+    return pipe(
+      req.body,
+      createCashback(saveCashback),
+      TE.map((data) => res.json(data)),
+      TE.mapLeft((e) => res.status(400).json(e.message)),
+    )()
   },
   async edit (req: Request, res: Response) {
     const { id } = req.params

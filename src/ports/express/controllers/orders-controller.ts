@@ -1,8 +1,12 @@
-import uuid from 'uuid'
+import { pipe } from 'fp-ts/function'
+import * as TE from 'fp-ts/TaskEither'
 import { Request, Response } from 'express'
-import { createErrorMessage } from '@/ports/express/helpers'
 
+import { createErrorMessage } from '@/ports/express/helpers'
+import { createOrder } from '@/adapters'
+import { saveOrder } from '@/adapters/db/mongo'
 import mongo from '@/ports/mongo/db'
+
 const { db } = mongo
 const col = db.collection('orders')
 const products = db.collection('products')
@@ -48,57 +52,12 @@ export default {
     }
   },
   async create (req: Request, res: Response) {
-    const keys = Object.keys(req.body)
-    for (const key of keys) {
-      if (req.body[key] === '') {
-        return res.status(400).json(createErrorMessage('Please, fill all fields!'))
-      }
-    }
-
-    const productsFront: OrderBody[] = req.body
-    const productsID = productsFront.map((product) => { return product.id })
-    const productsDatabase = await products.find({ id: { $in: productsID } })
-      .toArray()
-    const productsOrder = productsDatabase.map((product) => {
-      const { _id, ...productNoIdMongo } = product
-      return productNoIdMongo
-    })
-
-    for (const item of productsFront) {
-      for (const product of productsOrder) {
-        if (item.id === product.id) {
-          product.quantity = Number(item.quantity)
-        }
-      }
-    }
-
-    const orderTotalValue = productsOrder.reduce((total, item) => {
-      total = total + (item.quantity * item.price)
-      return parseFloat(total.toFixed(2))
-    }, 0)
-    const totalOrderProduct = productsFront.reduce((total, item) => {
-      return Number(total + item.quantity)
-    }, 0)
-
-    const item = {
-      id: uuid.v4(),
-      total: orderTotalValue,
-      quantity: totalOrderProduct,
-      products: productsOrder,
-    }
-
-    try {
-      const newOrderDB = await db.collection('orders')
-        .insertOne(item)
-      const { _id, ...newOrder } = newOrderDB.ops[0]
-
-      return res.json(newOrder)
-    } catch (error) {
-      console.log('Error: ', error)
-
-      return res.status(400)
-        .json(createErrorMessage('Error creating new order!'))
-    }
+    return pipe(
+      req.body,
+      createOrder(saveOrder),
+      TE.map((data) => res.json(data)),
+      TE.mapLeft((e) => res.status(400).json(e.message)),
+    )()
   },
   async edit (req: Request, res: Response) {
     const { id } = req.params

@@ -1,25 +1,12 @@
-import { right, Either, left, toError } from 'fp-ts/Either'
+import { toError } from 'fp-ts/Either'
 import { pipe } from 'fp-ts/function'
 import * as TE from 'fp-ts/TaskEither'
+
+import { validateCashback } from './validate-cashback'
 import { Cashback } from '@/core/types/cashback'
 
 export type SaveCashback = (c: Cashback) => Promise<unknown>
-type CreateCashback = (f: SaveCashback) => (c: Cashback) => TE.TaskEither<Error, unknown>
-
-const isMinValueLessThanMaxValue = (cashback: Cashback): boolean => {
-  return cashback.minValue < cashback.maxValue
-}
-const isCashbackValid = (cashback: Cashback): boolean => {
-  const cashbackValidators = [isMinValueLessThanMaxValue(cashback)]
-  return cashbackValidators.every((item) => item === true)
-}
-const validateCashback = (cashback: Cashback): Either<Error, Cashback> => {
-  if (isCashbackValid(cashback)) {
-    return right(cashback)
-  }
-  return left(
-    new Error('Invalid Cashback! - min value should be less then max value.'))
-}
+export type CreateCashback = (f: SaveCashback) => (c: Cashback) => TE.TaskEither<Error, unknown>
 
 export const createCashback: CreateCashback = (saveCashback) => (cashback) => {
   return pipe(
@@ -32,3 +19,15 @@ export const createCashback: CreateCashback = (saveCashback) => (cashback) => {
     )),
   )
 }
+/*
+const keys = Object.keys(req.body)
+    for (const key of keys) {
+      if (req.body[key] === '') {
+        return res.json(createErrorMessage('Please, fill all fields!'))
+      }
+    }
+
+    if (!isNumber(req.body.initial) || !isNumber(req.body.final)) {
+      return res.status(400).json(createErrorMessage('Please, fill all fields!'))
+    }
+*/

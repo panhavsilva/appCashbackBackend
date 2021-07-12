@@ -1,11 +1,11 @@
 import * as TE from 'fp-ts/TaskEither'
 import { pipe } from 'fp-ts/function'
 import { toError } from 'fp-ts/Either'
-import { Order } from '@/core/types/order'
+import { ProductOrder } from '@/core/types/order'
 import { validateOrder } from './validateOrder'
 
-export type SaveOrder = (o: Order) => Promise<unknown>
-export type CreateOrder = (f: SaveOrder) => (o: Order) => TE.TaskEither<Error, unknown>
+export type SaveOrder = (p: ProductOrder[]) => Promise<unknown>
+export type CreateOrder = (f: SaveOrder) => (p: ProductOrder[]) => TE.TaskEither<Error, unknown>
 
 export const createOrder: CreateOrder = (saveOrder) => (order) => {
   return pipe(

@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither'
 import { Request, Response } from 'express'
 import { createErrorMessage, isNumber } from '@/ports/express/helpers'
 import { createProduct } from '@/adapters'
-import { saveProduct } from '@/adapters/db/mongo'
+import { saveProduct } from '@/adapters/db/product'
 
 import mongo from '@/ports/mongo/db'
 const { db } = mongo

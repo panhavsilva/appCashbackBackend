@@ -1,16 +1,16 @@
 import { right, Either, left } from 'fp-ts/Either'
-import { Order } from '@/core/types/order'
+import { ProductOrder } from '@/core/types/order'
 
-const hasProduct = (order: Order): boolean => {
-  return order.productList.length > 0
+const hasProduct = (productsList: ProductOrder[]): boolean => {
+  return productsList.length > 0
 }
-const isProductsValid = (order: Order): boolean => {
-  const orderValidators = [hasProduct(order)]
+const isProductsValid = (productsList: ProductOrder[]): boolean => {
+  const orderValidators = [hasProduct(productsList)]
   return orderValidators.every((item) => item === true)
 }
-export const validateOrder = (order: Order): Either<Error, Order> => {
-  if (isProductsValid(order)) {
-    return right(order)
+export const validateOrder = (productsList: ProductOrder[]): Either<Error, ProductOrder[]> => {
+  if (isProductsValid(productsList)) {
+    return right(productsList)
   }
   return left(new Error('Invalid Product! - No products in the product list.'))
 }

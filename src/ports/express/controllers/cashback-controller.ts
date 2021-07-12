@@ -4,7 +4,7 @@ import { Request, Response } from 'express'
 
 import { createErrorMessage, isNumber } from '@/ports/express/helpers'
 import { createCashback } from '@/adapters'
-import { saveCashback } from '@/adapters/db/mongo'
+import { saveCashback } from '@/adapters/db/cashback'
 import mongo from '@/ports/mongo/db'
 
 const { db } = mongo

@@ -1,10 +1,11 @@
 import { pipe } from 'fp-ts/function'
 import * as TE from 'fp-ts/TaskEither'
+import * as E from 'fp-ts/Either'
 import { Request, Response } from 'express'
 
 import { createErrorMessage } from '@/ports/express/helpers'
 import { createOrder } from '@/adapters'
-import { saveOrder } from '@/adapters/db/mongo'
+import { saveOrder, getProductsList } from '@/adapters/db/order'
 import mongo from '@/ports/mongo/db'
 
 const { db } = mongo
@@ -53,8 +54,11 @@ export default {
   },
   async create (req: Request, res: Response) {
     return pipe(
-      req.body,
-      createOrder(saveOrder),
+      TE.tryCatch(
+        () => getProductsList(req.body),
+        E.toError,
+      ),
+      TE.chain(createOrder(saveOrder)),
       TE.map((data) => res.json(data)),
       TE.mapLeft((e) => res.status(400).json(e.message)),
     )()

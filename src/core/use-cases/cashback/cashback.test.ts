@@ -2,17 +2,22 @@ import { pipe } from 'fp-ts/function'
 import * as TE from 'fp-ts/TaskEither'
 import { createCashback, SaveCashback } from './create-cashback'
 import { Cashback } from '@/core/types/cashback'
+import { unsafePositiveNumber } from '@/config/tests/fixtures/index'
 
-const ValidCashback: Cashback = { minValue: 0, maxValue: 100, percentage: 5 }
+const ValidCashback: Cashback = {
+  minValue: unsafePositiveNumber(0),
+  maxValue: unsafePositiveNumber(100),
+  percentage: unsafePositiveNumber(5),
+}
 const cashbackMinValueGreaterThanMaxValue: Cashback = {
-  minValue: 100,
-  maxValue: 0,
-  percentage: 5,
+  minValue: unsafePositiveNumber(100),
+  maxValue: unsafePositiveNumber(0),
+  percentage: unsafePositiveNumber(5),
 }
 const cashbackMinValueEqualMaxValue: Cashback = {
-  minValue: 100,
-  maxValue: 100,
-  percentage: 5,
+  minValue: unsafePositiveNumber(100),
+  maxValue: unsafePositiveNumber(100),
+  percentage: unsafePositiveNumber(5),
 }
 const saveCashbackOk: SaveCashback = async (cashback) => {
   return `Cashback cadastrado com sucesso! ${cashback.minValue}`

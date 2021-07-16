@@ -2,10 +2,19 @@ import * as TE from 'fp-ts/TaskEither'
 import { pipe } from 'fp-ts/function'
 import { ProductOrder } from '@/core/types/order'
 import { createOrder, SaveOrder } from './create-order'
+import { unsafePositiveNumber } from '@/config/tests/fixtures/index'
 
 const order: ProductOrder[] = [
-  { name: 'product1', price: 100, quantity: 10 },
-  { name: 'product2', price: 200, quantity: 1 },
+  {
+    name: 'product1',
+    price: unsafePositiveNumber(100),
+    quantity: unsafePositiveNumber(10),
+  },
+  {
+    name: 'product2',
+    price: unsafePositiveNumber(200),
+    quantity: unsafePositiveNumber(1),
+  },
 ]
 const orderProductListEmpty: ProductOrder[] = []
 

@@ -41,7 +41,7 @@ const includeQuantityProduct: IncludeQuantityProduct = (body, productsOrder) => 
   for (const item of body) {
     for (const product of productsOrder) {
       if (item.id === product.id) {
-        product.quantity = Number(item.quantity)
+        product.quantity = item.quantity
       }
     }
   }

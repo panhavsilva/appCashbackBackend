@@ -1,14 +1,30 @@
-import { Product } from './product'
-export type ProductOrder = Product & { quantity: number }
+import * as t from 'io-ts'
+import { positiveCodec } from './scalar/positive'
+import { productCodec } from './product'
 
-export type Order = {
-  orderValue: number
-  productList: ProductOrder[]
-}
+export const productOrderCodec = t.type({
+  name: t.string,
+  price: positiveCodec,
+  quantity: positiveCodec,
+})
+export type ProductOrder = t.TypeOf<typeof productOrderCodec>
 
-export type OrderBody = {
-  id: string
-  quantity: number
-}
+export const orderCodec = t.type({
+  orderValue: positiveCodec,
+  productList: t.array(productCodec),
+})
+export type Order = t.TypeOf<typeof orderCodec>
 
-export type ProductsDatabase = OrderBody & Product
+export const orderBodyCodec = t.type({
+  id: t.string,
+  quantity: positiveCodec,
+})
+export type OrderBody = t.TypeOf<typeof orderBodyCodec>
+
+export const productsDatabaseCodec = t.type({
+  id: t.string,
+  name: t.string,
+  price: positiveCodec,
+  quantity: positiveCodec,
+})
+export type ProductsDatabase = t.TypeOf<typeof productsDatabaseCodec>

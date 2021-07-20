@@ -15,11 +15,11 @@ export const orderCodec = t.type({
 })
 export type Order = t.TypeOf<typeof orderCodec>
 
-export const orderBodyCodec = t.type({
+export const orderInputCodec = t.type({
   id: t.string,
   quantity: positiveCodec,
 })
-export type OrderBody = t.TypeOf<typeof orderBodyCodec>
+export type OrderInput = t.TypeOf<typeof orderInputCodec>
 
 export const productsDatabaseCodec = t.type({
   id: t.string,

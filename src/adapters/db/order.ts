@@ -1,9 +1,8 @@
 import { v4 } from 'uuid'
 import { createErrorMessage } from '@/ports/express/helpers/create-error-message'
 import { SaveOrder } from '@/core/use-cases/order/create-order'
-import { OrderBody, ProductOrder, ProductsDatabase } from '@/core/types/order'
-import mongo from '@/ports/mongo/db'
-const { db } = mongo
+import * as order from '@/core/types/order'
+import { db } from './db'
 const productsDBcollection = db.collection('products')
 
 export const saveOrder: SaveOrder = async (productsOrder) => {
@@ -36,7 +35,7 @@ export const saveOrder: SaveOrder = async (productsOrder) => {
   }
 }
 
-type IncludeQuantityProduct = (body: OrderBody[], productsDatabase: ProductsDatabase[]) => ProductOrder[]
+type IncludeQuantityProduct = (body: order.OrderBody[], productsDatabase: order.ProductsDatabase[]) => order.ProductOrder[]
 const includeQuantityProduct: IncludeQuantityProduct = (body, productsOrder) => {
   for (const item of body) {
     for (const product of productsOrder) {
@@ -49,7 +48,7 @@ const includeQuantityProduct: IncludeQuantityProduct = (body, productsOrder) => 
   return productsOrder
 }
 
-type GetProductsList = (body: OrderBody[]) => Promise<ProductOrder[]>
+type GetProductsList = (body: order.OrderBody[]) => Promise<order.ProductOrder[]>
 export const getProductsList: GetProductsList = async (body) => {
   const productsID = body.map((product) => { return product.id })
   const productsDatabase = await productsDBcollection.find({ id: { $in: productsID } })

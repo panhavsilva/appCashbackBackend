@@ -1,8 +1,7 @@
 import { v4 } from 'uuid'
 import { createErrorMessage } from '@/ports/express/helpers/create-error-message'
 import { SaveCashback } from '@/core/use-cases/cashback/create-cashback'
-import mongo from '@/ports/mongo/db'
-const { db } = mongo
+import { db } from './db'
 
 export const saveCashback: SaveCashback = async (cashback) => {
   const item = {

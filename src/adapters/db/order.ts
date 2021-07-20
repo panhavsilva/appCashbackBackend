@@ -35,7 +35,7 @@ export const saveOrder: SaveOrder = async (productsOrder) => {
   }
 }
 
-type IncludeQuantityProduct = (body: order.OrderBody[], productsDatabase: order.ProductsDatabase[]) => order.ProductOrder[]
+type IncludeQuantityProduct = (body: order.OrderInput[], productsDatabase: order.ProductsDatabase[]) => order.ProductOrder[]
 const includeQuantityProduct: IncludeQuantityProduct = (body, productsOrder) => {
   for (const item of body) {
     for (const product of productsOrder) {
@@ -48,7 +48,7 @@ const includeQuantityProduct: IncludeQuantityProduct = (body, productsOrder) => 
   return productsOrder
 }
 
-type GetProductsList = (body: order.OrderBody[]) => Promise<order.ProductOrder[]>
+type GetProductsList = (body: order.OrderInput[]) => Promise<order.ProductOrder[]>
 export const getProductsList: GetProductsList = async (body) => {
   const productsID = body.map((product) => { return product.id })
   const productsDatabase = await productsDBcollection.find({ id: { $in: productsID } })

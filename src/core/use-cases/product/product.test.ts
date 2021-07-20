@@ -1,11 +1,12 @@
-import { unsafePositiveNumber } from '@/config/tests/fixtures'
+import { unsafe } from '@/config/tests/fixtures'
+import { Positive } from '@/core/types/scalar/positive'
 import { pipe } from 'fp-ts/function'
 import * as TE from 'fp-ts/TaskEither'
 import { createProduct, SaveProduct } from './create-product'
 
 const product = {
   name: 'product',
-  price: unsafePositiveNumber(10),
+  price: unsafe<Positive>(10),
 }
 const saveProduct: SaveProduct = async (product) => {
   return `Produto cadastrado com sucesso! ${product.name}`

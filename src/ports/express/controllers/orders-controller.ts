@@ -6,9 +6,9 @@ import { Request, Response } from 'express'
 import { createErrorMessage } from '@/ports/express/helpers'
 import { createOrder } from '@/adapters'
 import { saveOrder, getProductsList } from '@/adapters/db/order'
-import mongo from '@/ports/mongo/db'
+import { dbConnection } from '@/adapters/db'
 
-const { db } = mongo
+const { db } = dbConnection
 const col = db.collection('orders')
 const products = db.collection('products')
 

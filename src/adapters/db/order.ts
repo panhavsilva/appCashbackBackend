@@ -2,8 +2,7 @@ import { v4 } from 'uuid'
 import { createErrorMessage } from '@/ports/express/helpers/create-error-message'
 import { SaveOrder } from '@/core/use-cases/order/create-order'
 import * as order from '@/core/types/order'
-import { db } from './db'
-const productsDBcollection = db.collection('products')
+import { db } from './'
 
 export const saveOrder: SaveOrder = async (productsOrder) => {
   const orderTotalValue = productsOrder.reduce((total, item) => {
@@ -50,6 +49,7 @@ const includeQuantityProduct: IncludeQuantityProduct = (body, productsOrder) => 
 
 type GetProductsList = (body: order.OrderInput[]) => Promise<order.ProductOrder[]>
 export const getProductsList: GetProductsList = async (body) => {
+  const productsDBcollection = db.collection('products')
   const productsID = body.map((product) => { return product.id })
   const productsDatabase = await productsDBcollection.find({ id: { $in: productsID } })
     .toArray()

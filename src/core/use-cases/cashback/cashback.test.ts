@@ -1,8 +1,7 @@
 import { pipe } from 'fp-ts/function'
-import * as TE from 'fp-ts/TaskEither'
 import { createCashback, SaveCashback } from './create-cashback'
 import { Cashback } from '@/core/types/cashback'
-import { unsafe } from '@/config/tests/fixtures/index'
+import { unsafe, mapAll } from '@/config/tests/fixtures'
 
 const ValidCashback: Cashback = {
   minValue: unsafe(0),
@@ -30,7 +29,7 @@ it('Deve criar um cashback', async () => {
   return pipe(
     ValidCashback,
     createCashback(saveCashbackOk),
-    TE.map((newCashback) =>
+    mapAll((newCashback) =>
       expect(newCashback).toBe(`Cashback cadastrado com sucesso! ${ValidCashback.minValue}`)),
   )()
 })
@@ -39,7 +38,7 @@ it('Deve lançar um erro quando o minValue for maior que o maxValue', async () =
   return pipe(
     cashbackMinValueGreaterThanMaxValue,
     createCashback(saveCashbackError),
-    TE.mapLeft((newCashback) => expect(newCashback)
+    mapAll((newCashback) => expect(newCashback)
       .toEqual(new Error('Invalid Cashback! - min value should be less then max value.'))),
   )()
 })
@@ -48,7 +47,7 @@ it('Deve lançar um erro quando o minValue for igual ao maxValue', async () => {
   return pipe(
     cashbackMinValueEqualMaxValue,
     createCashback(saveCashbackError),
-    TE.mapLeft((newCashback) => expect(newCashback)
+    mapAll((newCashback) => expect(newCashback)
       .toEqual(new Error('Invalid Cashback! - min value should be less then max value.'))),
   )()
 })
@@ -58,7 +57,7 @@ it('Quando o cashback for válido e um erro for lançado à partir da função s
     return pipe(
       ValidCashback,
       createCashback(saveCashbackError),
-      TE.mapLeft((newCashback) => expect(newCashback)
+      mapAll((newCashback) => expect(newCashback)
         .toEqual(new Error('Database Error!'))),
     )()
   })

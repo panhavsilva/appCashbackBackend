@@ -1,28 +1,34 @@
 import { pipe } from 'fp-ts/function'
-import * as E from 'fp-ts/Either'
+import * as TE from 'fp-ts/TaskEither'
 import { positiveCodec } from './positive'
+import { getErrorMessage, mapAll } from '@/config/tests/fixtures'
 
 it('Deveria validar números positivos corretamente', async () => {
   return pipe(
     1,
     positiveCodec.decode,
-    E.map(result => expect(result).toBe(1)),
-  )
+    TE.fromEither,
+    mapAll(result => expect(result).toBe(1)),
+  )()
 })
 
 it('Deveria validar números zero corretamente', async () => {
   return pipe(
     0,
     positiveCodec.decode,
-    E.map(result => expect(result).toBe(0)),
-  )
+    TE.fromEither,
+    mapAll(result => expect(result).toBe(0)),
+  )()
 })
 
 it('Não Deveria aceitar números negativos', async () => {
   return pipe(
     -1,
     positiveCodec.decode,
-    E.mapLeft(result => expect(result[0]?.message)
-      .toBe('Invalid number! Number is not positive!')),
-  )
+    TE.fromEither,
+    mapAll(error => {
+      const errorMessage = getErrorMessage(error)
+      expect(errorMessage).toBe('Invalid number! Number is not positive!')
+    }),
+  )()
 })

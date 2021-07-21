@@ -1,7 +1,7 @@
-import mongo from '@/ports/mongo/db'
+import { dbConnection } from '@/adapters/db'
 
 async function loadProviders () {
-  await mongo.boot()
+  await dbConnection.boot()
   await import('./server')
 }
 

@@ -5,9 +5,9 @@ import { Request, Response } from 'express'
 import { createErrorMessage, isNumber } from '@/ports/express/helpers'
 import { createCashback } from '@/adapters'
 import { saveCashback } from '@/adapters/db/cashback'
-import mongo from '@/ports/mongo/db'
+import { dbConnection } from '@/adapters/db'
 
-const { db } = mongo
+const { db } = dbConnection
 const col = db.collection('cashbackRanges')
 
 export default {

@@ -1,10 +1,11 @@
 import { v4 } from 'uuid'
+import { CashbackOutput } from '@/core/types/cashback'
 import { createErrorMessage } from '@/ports/express/helpers/create-error-message'
 import { SaveCashback } from '@/core/use-cases/cashback/create-cashback'
-import { db } from './db'
+import * as dbCashback from './'
 
 export const saveCashback: SaveCashback = async (cashback) => {
-  const item = {
+  const item: CashbackOutput = {
     id: v4(),
     name: cashback.percentage,
     initial: cashback.minValue,
@@ -12,10 +13,7 @@ export const saveCashback: SaveCashback = async (cashback) => {
   }
 
   try {
-    const newCashback = await db.collection('cashbackRanges')
-      .insertOne(item)
-    const { _id, ...cashback } = newCashback.ops[0]
-    return cashback
+    return dbCashback.saveCashback(item)
   } catch (error) {
     console.log('Error: ', error)
 

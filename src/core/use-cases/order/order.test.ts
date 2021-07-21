@@ -1,8 +1,7 @@
-import * as TE from 'fp-ts/TaskEither'
 import { pipe } from 'fp-ts/function'
 import { ProductOrder } from '@/core/types/order'
 import { createOrder, SaveOrder } from './create-order'
-import { unsafe } from '@/config/tests/fixtures/index'
+import { unsafe, mapAll } from '@/config/tests/fixtures/index'
 
 const order: ProductOrder[] = [
   {
@@ -29,7 +28,7 @@ it('Deve criar um pedido', async () => {
   return pipe(
     order,
     createOrder(saveOrder),
-    TE.map((newOrder) => expect(newOrder).toBe(`Pedido cadastrado com sucesso! ${order.length}`)),
+    mapAll((newOrder) => expect(newOrder).toBe(`Pedido cadastrado com sucesso! ${order.length}`)),
   )()
 })
 
@@ -37,7 +36,7 @@ it('Deve lançar um erro quando productList for um array vazio', async () => {
   return pipe(
     orderProductListEmpty,
     createOrder(saveOrderError),
-    TE.map((newOrder) => expect(newOrder)
+    mapAll((newOrder) => expect(newOrder)
       .toEqual(Error('Invalid Product! - No products in the product list.'))),
   )()
 })
@@ -47,7 +46,7 @@ it('Quando o pedido for válido e um erro for lançado à partir da função sav
     return pipe(
       order,
       createOrder(saveOrderError),
-      TE.mapLeft((newOrder) => expect(newOrder)
+      mapAll((newOrder) => expect(newOrder)
         .toEqual(Error('Database Error!'))),
     )()
   })

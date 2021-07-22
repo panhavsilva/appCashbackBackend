@@ -1,4 +1,4 @@
-import { dbConnection } from '@/adapters/db'
+import { dbConnection } from '@/ports/adapters/db'
 
 async function loadProviders () {
   await dbConnection.boot()

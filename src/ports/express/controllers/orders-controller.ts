@@ -5,8 +5,8 @@ import { Request, Response } from 'express'
 
 import { createErrorMessage } from '@/ports/express/helpers'
 import { createOrder } from '@/core/order/adapter/order'
-import { saveOrder, getProductsList } from '@/adapters/db/order'
-import { dbConnection } from '@/adapters/db'
+import { saveOrder, getProductsList } from '@/ports/adapters/db/order'
+import { dbConnection } from '@/ports/adapters/db'
 
 const { db } = dbConnection
 const col = db.collection('orders')

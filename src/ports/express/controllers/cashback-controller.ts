@@ -3,7 +3,7 @@ import * as TE from 'fp-ts/TaskEither'
 import { Request, Response } from 'express'
 
 import { createErrorMessage, isNumber } from '@/ports/express/helpers'
-import { createCashback } from '@/adapters'
+import { createCashback } from '@/core/cashback/adapter/cashback'
 import { saveCashback } from '@/adapters/db/cashback'
 import { dbConnection } from '@/adapters/db'
 

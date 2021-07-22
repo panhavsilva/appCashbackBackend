@@ -4,7 +4,7 @@ import * as E from 'fp-ts/Either'
 import { Request, Response } from 'express'
 
 import { createErrorMessage } from '@/ports/express/helpers'
-import { createOrder } from '@/adapters'
+import { createOrder } from '@/core/order/adapter/order'
 import { saveOrder, getProductsList } from '@/adapters/db/order'
 import { dbConnection } from '@/adapters/db'
 

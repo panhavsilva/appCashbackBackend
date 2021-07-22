@@ -1,6 +1,6 @@
 import { right, Either, left } from 'fp-ts/Either'
 
-import { Cashback } from '@/core/types/cashback'
+import { Cashback } from '../types/cashback'
 
 const isMinValueLessThanMaxValue = (cashback: Cashback): boolean => {
   return cashback.minValue < cashback.maxValue

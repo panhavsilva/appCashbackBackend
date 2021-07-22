@@ -1,7 +1,7 @@
 import { v4 } from 'uuid'
-import { CashbackOutput } from '@/core/types/cashback'
+import { CashbackOutput } from '@/core/cashback/types/cashback'
 import { createErrorMessage } from '@/ports/express/helpers/create-error-message'
-import { SaveCashback } from '@/core/use-cases/cashback/create-cashback'
+import { SaveCashback } from '@/core/cashback/use-cases/create-cashback'
 import * as dbCashback from './'
 
 export const saveCashback: SaveCashback = async (cashback) => {

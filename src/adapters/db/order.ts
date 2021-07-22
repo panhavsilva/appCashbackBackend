@@ -1,7 +1,7 @@
 import { v4 } from 'uuid'
 import { createErrorMessage } from '@/ports/express/helpers/create-error-message'
-import { SaveOrder } from '@/core/use-cases/order/create-order'
-import * as order from '@/core/types/order'
+import { SaveOrder } from '@/core/order/use-cases/create-order'
+import * as order from '@/core/order/types/order'
 import { db } from './'
 
 export const saveOrder: SaveOrder = async (productsOrder) => {

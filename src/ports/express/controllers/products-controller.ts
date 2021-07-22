@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/function'
 import * as TE from 'fp-ts/TaskEither'
 import { Request, Response } from 'express'
 import { createErrorMessage, isNumber } from '@/ports/express/helpers'
-import { createProduct } from '@/adapters'
+import { createProduct } from '@/core/product/adapter/product'
 import { saveProduct } from '@/adapters/db/product'
 
 import { dbConnection } from '@/adapters/db'

@@ -1,5 +1,5 @@
 import * as t from 'io-ts'
-import { positiveCodec } from './scalar/positive'
+import { positiveCodec } from '@/core/scalar-types/positive'
 
 export const productCodec = t.type({
   name: t.string,

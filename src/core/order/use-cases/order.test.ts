@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/function'
-import { ProductOrder } from '@/core/types/order'
+import { ProductOrder } from '../types/order'
 import { createOrder, SaveOrder } from './create-order'
 import { unsafe, mapAll } from '@/config/tests/fixtures/index'
 

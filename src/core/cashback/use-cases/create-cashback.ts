@@ -3,7 +3,7 @@ import { pipe } from 'fp-ts/function'
 import * as TE from 'fp-ts/TaskEither'
 
 import { validateCashback } from './validate-cashback'
-import { Cashback } from '@/core/types/cashback'
+import { Cashback } from '../types/cashback'
 
 export type SaveCashback = (c: Cashback) => Promise<unknown>
 export type CreateCashback = (f: SaveCashback) => (c: Cashback) => TE.TaskEither<Error, unknown>

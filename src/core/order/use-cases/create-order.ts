@@ -1,7 +1,7 @@
 import * as TE from 'fp-ts/TaskEither'
 import { pipe } from 'fp-ts/function'
 import { toError } from 'fp-ts/Either'
-import { ProductOrder } from '@/core/types/order'
+import { ProductOrder } from '../types/order'
 import { validateOrder } from './validate-order'
 
 export type SaveOrder = (p: ProductOrder[]) => Promise<unknown>

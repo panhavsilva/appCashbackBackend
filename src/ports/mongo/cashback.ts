@@ -1,4 +1,4 @@
-import { CashbackOutput } from '@/core/types/cashback'
+import { CashbackOutput } from '@/core/cashback/types/cashback'
 import { dbConnection } from './'
 
 type SaveCashback = (c: CashbackOutput) => Promise<unknown>

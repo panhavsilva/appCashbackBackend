@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/function'
 import { createCashback, SaveCashback } from './create-cashback'
-import { Cashback } from '@/core/types/cashback'
+import { Cashback } from '../types/cashback'
 import { unsafe, mapAll } from '@/config/tests/fixtures'
 
 const ValidCashback: Cashback = {
@@ -39,7 +39,7 @@ it('Deve lançar um erro quando o minValue for maior que o maxValue', async () =
     cashbackMinValueGreaterThanMaxValue,
     createCashback(saveCashbackError),
     mapAll((newCashback) => expect(newCashback)
-      .toEqual(new Error('Invalid Cashback! - min value should be less then max value.'))),
+      .toEqual(Error('Invalid Cashback! - min value should be less then max value.'))),
   )()
 })
 
@@ -48,7 +48,7 @@ it('Deve lançar um erro quando o minValue for igual ao maxValue', async () => {
     cashbackMinValueEqualMaxValue,
     createCashback(saveCashbackError),
     mapAll((newCashback) => expect(newCashback)
-      .toEqual(new Error('Invalid Cashback! - min value should be less then max value.'))),
+      .toEqual(Error('Invalid Cashback! - min value should be less then max value.'))),
   )()
 })
 
@@ -58,6 +58,6 @@ it('Quando o cashback for válido e um erro for lançado à partir da função s
       ValidCashback,
       createCashback(saveCashbackError),
       mapAll((newCashback) => expect(newCashback)
-        .toEqual(new Error('Database Error!'))),
+        .toEqual(Error('Database Error!'))),
     )()
   })

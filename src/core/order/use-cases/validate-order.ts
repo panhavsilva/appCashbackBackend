@@ -1,5 +1,5 @@
 import { right, Either, left } from 'fp-ts/Either'
-import { ProductOrder } from '@/core/types/order'
+import { ProductOrder } from '../types/order'
 
 const hasProduct = (productsList: ProductOrder[]): boolean => {
   return productsList.length > 0

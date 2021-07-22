@@ -1,6 +1,6 @@
 import * as t from 'io-ts'
 import { UUID } from 'io-ts-types'
-import { positiveCodec } from './scalar/positive'
+import { positiveCodec } from '@/core/scalar-types/positive'
 
 export const cashbackCodec = t.type({
   minValue: positiveCodec,

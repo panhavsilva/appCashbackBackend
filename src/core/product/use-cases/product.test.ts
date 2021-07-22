@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/function'
-import { Product } from '@/core/types/product'
+import { Product } from '../types/product'
 import { createProduct, SaveProduct } from './create-product'
 import { unsafe, mapAll } from '@/config/tests/fixtures'
 

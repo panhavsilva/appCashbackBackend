@@ -3,11 +3,11 @@ import * as TE from 'fp-ts/TaskEither'
 import { Request, Response } from 'express'
 
 import { createErrorMessage, isNumber } from '@/ports/express/helpers'
-import { createCashback } from '@/adapters'
-import { saveCashback } from '@/adapters/db/cashback'
-import mongo from '@/ports/mongo/db'
+import { createCashback } from '@/core/cashback/adapter/cashback'
+import { saveCashback } from '@/ports/adapters/db/cashback'
+import { dbConnection } from '@/ports/adapters/db'
 
-const { db } = mongo
+const { db } = dbConnection
 const col = db.collection('cashbackRanges')
 
 export default {

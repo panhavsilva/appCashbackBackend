@@ -2,11 +2,12 @@ import { pipe } from 'fp-ts/function'
 import * as TE from 'fp-ts/TaskEither'
 import { Request, Response } from 'express'
 import { createErrorMessage, isNumber } from '@/ports/express/helpers'
-import { createProduct } from '@/adapters'
-import { saveProduct } from '@/adapters/db/product'
+import { createProduct } from '@/core/product/adapter/product'
+import { saveProduct } from '@/ports/adapters/db/product'
 
-import mongo from '@/ports/mongo/db'
-const { db } = mongo
+import { dbConnection } from '@/ports/adapters/db'
+
+const { db } = dbConnection
 const col = db.collection('products')
 
 export default {

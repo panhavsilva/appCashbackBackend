@@ -32,9 +32,13 @@
     "dotenv": "8.2.0",
     "express": "4.17.1",
     "fp-ts": "2.10.4",
+    "io-ts": "2.2.16",
+    "io-ts-types": "0.5.16",
     "method-override": "3.0.0",
     "module-alias": "2.2.2",
     "mongodb": "3.6.5",
+    "monocle-ts": "2.3.10",
+    "newtype-ts": "0.3.4",
     "uuid": "8.3.2"
   },
   "devDependencies": {

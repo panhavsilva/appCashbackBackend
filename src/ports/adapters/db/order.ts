@@ -2,6 +2,7 @@ import { v4 } from 'uuid'
 import { createErrorMessage } from '@/ports/express/helpers/create-error-message'
 import { SaveOrder } from '@/core/order/use-cases/create-order'
 import * as order from '@/core/order/types/order'
+import { Positive } from '@/core/scalar-types/positive'
 import * as dbOrder from './'
 
 export const saveOrder: SaveOrder = async (productsOrder) => {
@@ -30,24 +31,26 @@ export const saveOrder: SaveOrder = async (productsOrder) => {
   }
 }
 
-type IncludeQuantityProduct = (body: order.OrderInput[], productsDatabase: order.ProductsDatabase[]) => order.ProductOrder[]
-const includeQuantityProduct: IncludeQuantityProduct = (body, productsOrder) => {
-  for (const item of body) {
-    for (const product of productsOrder) {
-      if (item.id === product.id) {
-        product.quantity = item.quantity
-      }
-    }
-  }
+type FilterBodyQuantityProduct = (body: order.OrderInput[], id: string) => Positive
+const filterBodyQuantityProduct: FilterBodyQuantityProduct = (body, id) => {
+  const productBody = body.filter((product) => product.id === id)
+  return productBody[0]?.quantity || 0 as Positive
+}
 
-  return productsOrder
+type IncludeBodyQuantityProduct = (body: order.OrderInput[], productsDatabase: order.ProductsDatabase[]) => order.ProductOrder[]
+const includeBodyQuantityProductInProductDb: IncludeBodyQuantityProduct = (body, productsOrder) => {
+  const newProductsOrder = productsOrder.map((product) => {
+    return { ...product, quantity: filterBodyQuantityProduct(body, product.id) }
+  })
+
+  return newProductsOrder
 }
 
 type GetProductsList = (body: order.OrderInput[]) => Promise<order.ProductOrder[]>
 export const getProductsList: GetProductsList = async (body) => {
   const productsID = body.map((product) => { return product.id })
   const productsDatabase = await dbOrder.getProductsList(productsID)
-  const productsOrder = includeQuantityProduct(body, productsDatabase)
+  const productsOrder = includeBodyQuantityProductInProductDb(body, productsDatabase)
 
   return productsOrder
 }

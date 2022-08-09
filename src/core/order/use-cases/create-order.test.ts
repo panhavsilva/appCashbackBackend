@@ -17,10 +17,10 @@ const order: ProductOrder[] = [
 ]
 const orderProductListEmpty: ProductOrder[] = []
 
-const saveOrder: SaveOrder = async (order) => {
+const saveOrder: SaveOrder<string> = async (order) => {
   return `Pedido cadastrado com sucesso! ${order.length}`
 }
-const saveOrderError: SaveOrder = async () => {
+const saveOrderError: SaveOrder<string> = async () => {
   throw new Error('Database Error!')
 }
 

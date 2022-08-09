@@ -2,10 +2,10 @@ import { v4 } from 'uuid'
 import { createErrorMessage } from '@/ports/express/helpers/create-error-message'
 import { SaveOrder } from '@/core/order/use-cases/create-order'
 import * as order from '@/core/order/types/order'
-import { Positive } from '@/core/scalar-types/positive'
+import { PositiveOutput } from '@/core/scalar-types/positive'
 import * as dbOrder from './'
 
-export const saveOrder: SaveOrder = async (productsOrder) => {
+export const saveOrder: SaveOrder<unknown> = async (productsOrder) => {
   const orderTotalValue = productsOrder.reduce((total, item) => {
     total = total + (item.quantity * item.price)
     return parseFloat(total.toFixed(2))
@@ -23,7 +23,8 @@ export const saveOrder: SaveOrder = async (productsOrder) => {
   }
 
   try {
-    return dbOrder.saveOrder(item)
+    const result = await dbOrder.saveOrder(item)
+    return result
   } catch (error) {
     console.log('Error: ', error)
 
@@ -31,13 +32,13 @@ export const saveOrder: SaveOrder = async (productsOrder) => {
   }
 }
 
-type FilterBodyQuantityProduct = (body: order.OrderInput[], id: string) => Positive
+type FilterBodyQuantityProduct = (body: order.OrderInput[], id: string) => PositiveOutput
 const filterBodyQuantityProduct: FilterBodyQuantityProduct = (body, id) => {
   const productBody = body.filter((product) => product.id === id)
-  return productBody[0]?.quantity || 0 as Positive
+  return productBody[0]?.quantity || 0
 }
 
-type IncludeBodyQuantityProduct = (body: order.OrderInput[], productsDatabase: order.ProductsDatabase[]) => order.ProductOrder[]
+type IncludeBodyQuantityProduct = (body: order.OrderInput[], productsDatabase: order.ProductsDatabase[]) => order.ProductOrderOutput[]
 const includeBodyQuantityProductInProductDb: IncludeBodyQuantityProduct = (body, productsOrder) => {
   const newProductsOrder = productsOrder.map((product) => {
     return { ...product, quantity: filterBodyQuantityProduct(body, product.id) }
@@ -46,7 +47,7 @@ const includeBodyQuantityProductInProductDb: IncludeBodyQuantityProduct = (body,
   return newProductsOrder
 }
 
-type GetProductsList = (body: order.OrderInput[]) => Promise<order.ProductOrder[]>
+type GetProductsList = (body: order.OrderInputList) => Promise<order.ProductOrderOutput[]>
 export const getProductsList: GetProductsList = async (body) => {
   const productsID = body.map((product) => { return product.id })
   const productsDatabase = await dbOrder.getProductsList(productsID)

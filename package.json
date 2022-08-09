@@ -5,7 +5,7 @@
   "description": "Project Cashback",
   "scripts": {
     "start": "node dist/src/app.js",
-    "dev": "nodemon --exec sucrase-node src/app.ts",
+    "dev": "sucrase-node src/app.ts",
     "test": "jest --passWithNoTests --maxWorkers=50% && npm run test:integration",
     "test:watch": "jest --watch --maxWorkers=25%",
     "test:integration": "jest --passWithNoTests --config jest.config.integration.js",

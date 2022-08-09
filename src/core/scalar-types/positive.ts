@@ -15,3 +15,5 @@ export const positiveCodec = withMessage(
 )
 
 export type Positive = t.TypeOf<typeof positiveCodec>
+
+export type PositiveOutput = t.OutputOf<typeof positiveCodec>

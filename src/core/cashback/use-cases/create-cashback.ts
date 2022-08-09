@@ -19,15 +19,3 @@ export const createCashback: CreateCashback = (saveCashback) => (cashback) => {
     )),
   )
 }
-/*
-const keys = Object.keys(req.body)
-    for (const key of keys) {
-      if (req.body[key] === '') {
-        return res.json(createErrorMessage('Please, fill all fields!'))
-      }
-    }
-
-    if (!isNumber(req.body.initial) || !isNumber(req.body.final)) {
-      return res.status(400).json(createErrorMessage('Please, fill all fields!'))
-    }
-*/

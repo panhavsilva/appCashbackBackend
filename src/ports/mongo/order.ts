@@ -11,7 +11,7 @@ export const saveOrder: SaveOrder = async (item) => {
   return newOrder
 }
 
-type GetProductsList = (body: string[]) => Promise<order.ProductsDatabase[]>
+type GetProductsList = (body: string[]) => Promise<order.ProductsDb>
 export const getProductsList: GetProductsList = async (body) => {
   const productsDBcollection = dbConnection.db.collection('products')
   const productsDatabase = await productsDBcollection.find({ id: { $in: body } })

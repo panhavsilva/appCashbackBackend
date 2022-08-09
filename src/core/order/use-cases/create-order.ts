@@ -1,11 +1,11 @@
 import * as TE from 'fp-ts/TaskEither'
 import { pipe } from 'fp-ts/function'
 import { toError } from 'fp-ts/Either'
-import { ProductOrder } from '../types/order'
+import { ProductsOrder } from '../types/order'
 import { validateOrder } from './validate-order'
 
-export type SaveOrder = (p: ProductOrder[]) => Promise<unknown>
-export type CreateOrder = (f: SaveOrder) => (p: ProductOrder[]) => TE.TaskEither<Error, unknown>
+export type SaveOrder<A> = (p: ProductsOrder) => Promise<A>
+export type CreateOrder = <A>(f: SaveOrder<A>) => (p: ProductsOrder) => TE.TaskEither<Error, A>
 
 export const createOrder: CreateOrder = (saveOrder) => (order) => {
   return pipe(
@@ -18,12 +18,3 @@ export const createOrder: CreateOrder = (saveOrder) => (order) => {
     )),
   )
 }
-
-/*
-const keys = Object.keys(req.body)
-for (const key of keys) {
-  if (req.body[key] === '') {
-    return res.status(400).json(createErrorMessage('Please, fill all fields!'))
-  }
-}
-*/

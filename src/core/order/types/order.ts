@@ -9,6 +9,10 @@ export const productOrderCodec = t.type({
   quantity: positiveCodec,
 })
 export type ProductOrder = t.TypeOf<typeof productOrderCodec>
+export type ProductOrderOutput = t.OutputOf<typeof productOrderCodec>
+
+export const productsOrderCodec = t.array(productOrderCodec)
+export type ProductsOrder = t.TypeOf<typeof productsOrderCodec>
 
 export const orderCodec = t.type({
   orderValue: positiveCodec,
@@ -17,18 +21,23 @@ export const orderCodec = t.type({
 export type Order = t.TypeOf<typeof orderCodec>
 
 export const orderInputCodec = t.type({
-  id: t.string,
+  id: UUID,
   quantity: positiveCodec,
 })
 export type OrderInput = t.TypeOf<typeof orderInputCodec>
 
+export const orderInputListCodec = t.array(orderInputCodec)
+export type OrderInputList = t.TypeOf<typeof orderInputListCodec>
+
 export const productsDatabaseCodec = t.type({
-  id: t.string,
+  id: UUID,
   name: t.string,
   price: positiveCodec,
   quantity: positiveCodec,
 })
-export type ProductsDatabase = t.TypeOf<typeof productsDatabaseCodec>
+export type ProductsDatabase = t.OutputOf<typeof productsDatabaseCodec>
+export const productsDbCodec = t.array(productsDatabaseCodec)
+export type ProductsDb = t.OutputOf<typeof productsDbCodec>
 
 export const orderOutputCodec = t.type({
   id: UUID,

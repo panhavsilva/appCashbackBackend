@@ -14,17 +14,3 @@ export const createProduct: CreateProduct = (saveProduct) => (product) => {
     ),
   )
 }
-
-/*
-const keys = Object.keys(req.body)
-
-for (const key of keys) {
-  if (req.body[key] === '') {
-    return res.status(400).json(createErrorMessage('Please, correctly fill fields!'))
-  }
-}
-
-if (!isNumber(req.body.price)) {
-  return res.status(400).json(createErrorMessage('Please, correctly fill fields!'))
-}
-*/

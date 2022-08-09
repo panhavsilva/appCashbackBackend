@@ -52,15 +52,15 @@ export default {
         .json(createErrorMessage('Error show order!'))
     }
   },
-  async create (req: Request, res: Response) {
+  async create (req: Request, _res: Response) {
     return pipe(
       TE.tryCatch(
         () => getProductsList(req.body),
         E.toError,
       ),
       TE.chain(createOrder(saveOrder)),
-      TE.map((data) => res.json(data)),
-      TE.mapLeft((e) => res.status(400).json(e.message)),
+      // TE.map((data) => res.json(data)),
+      // TE.mapLeft((e) => res.status(400).json(e.message)),
     )()
   },
   async edit (req: Request, res: Response) {
